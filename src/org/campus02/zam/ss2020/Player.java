@@ -1,12 +1,19 @@
 package org.campus02.zam.ss2020;
 
+import java.util.ArrayList;
+
 public abstract class Player {
-    String name;
-    int points;
+    private String name;
+    private int points;
+    private ArrayList<UnoCard> hand;
+    private int cards;
+
+
 
     public Player(String name) {
         this.name = name;
         this.points = 0;
+
     }
 
     public int getPoints() {

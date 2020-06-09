@@ -8,35 +8,66 @@ import java.util.Stack;
 public class Deck {
     Type[] type;
     Value[] value;
-    Stack<String> deck;
+    Stack<UnoCard> deck;
 
     public Deck() {
         this.type =  Type.values();
         this.value = Value.values();
         this.deck = new Stack<>();
-        String card;
-        for (Value v : value) {
-            if (v.name().contains("WILD")) {
-                card = v.name();
+        UnoCard card;
+        for (Value v : value){
+            if (v.name().contains("WILD")){
+                card = new UnoCard(v);
                 deck.push(card);
                 deck.push(card);
                 deck.push(card);
                 deck.push(card);
             }
-             for (Type t : type) {
-                 card = t.name() + "_" + v.name();
-                 if (!card.contains("WILD")) {
-                     if (card.contains("ZERO")) {
-                         deck.push(card);
-
-                     } else {
-                         deck.push(card);
-                         deck.push(card);
-                     }
-                 }
-             }
+            else {
+                for (Type t : type) {
+                    if (!v.name().contains("WILD")) {
+                        if (v.name().contains("ZERO")) {
+                            card = new UnoCard(t, v);
+                            deck.push(card);
+                        } else {
+                            card = new UnoCard(t, v);
+                            deck.push(card);
+                            deck.push(card);
+                        }
+                    }
+                }
+            }
         }
-        System.out.println(deck);
+//        for (Value v : value) {
+//
+//                 if (v.name().contains("WILD")) {
+//                     card = new UnoCard(v);
+//                     deck.push(card);
+//                     deck.push(card);
+//                     deck.push(card);
+//                     deck.push(card);
+//                 }
+//                 else{
+//                     for (Type t : type) {
+//                 card = new UnoCard(t, v);
+//                     if (card.equals("ZERO")) {
+//                         deck.push(card);
+//
+//                     } else {
+//                         deck.push(card);
+//                         deck.push(card);
+//                     }
+//                 }
+//             }
+//        }
+        System.out.println();
+    }
+
+    @Override
+    public String toString() {
+        return "Deck{" +
+                "deck=" + deck +
+                '}';
     }
 
     public void shuffle () {
@@ -45,11 +76,11 @@ public class Deck {
         System.out.println(deck);
     }
 
-    public ArrayList<String> dealCards() {
+    public ArrayList<UnoCard> dealCards() {
 
-        ArrayList<String> deal = new ArrayList<>();
+        ArrayList<UnoCard> deal = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            String card = deck.pop();
+            UnoCard card = deck.pop();
             deal.add(card);
         }
         //System.out.println(deck.size());

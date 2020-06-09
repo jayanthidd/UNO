@@ -37,16 +37,16 @@ public class PlayerManagement {
         }
     }
 
-    public HashMap<String, Integer> playerScores() {
-        HashMap<String, Integer> scores = new HashMap<>();
-        for (Player p : players){
-            scores.put(p.name, p.points);
-        }
-        return scores;
-    }
-
-    public void setPoints (Player p) {
-        p.points = 15; //just a change
-
-    }
+//    public HashMap<String, Integer> playerScores() {
+//        HashMap<String, Integer> scores = new HashMap<>();
+//        for (Player p : players){
+//            scores.put(p.name, p.points);
+//        }
+//        return scores;
+//    }
+//
+//    public void setPoints (Player p) {
+//        p.points = 15; //just a change
+//
+//    }
 }
