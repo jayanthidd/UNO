@@ -45,8 +45,21 @@ public class PlayerManagement {
 //        return scores;
 //    }
 //
-//    public void setPoints (Player p) {
-//        p.points = 15; //just a change
-//
-//    }
+    public void setPoints (Player p) {
+        int pts = 0;
+        ArrayList <UnoCard>hand = p.getHand();
+                for (UnoCard u : hand) {
+            pts = u.getCardPoints();
+        }
+    }
+
+    public static void main(String[] args) {
+        Player jay = new HumanPlayer("Jayanthi");
+        Deck d = new Deck();
+        d.shuffle();
+        jay.setHand(d.dealCards());
+        System.out.println(jay.getHand());
+        jay.setPoints(jay.getHand());
+        System.out.println(jay.getPoints());
+    }
 }

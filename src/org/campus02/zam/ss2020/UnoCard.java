@@ -7,11 +7,18 @@ public class UnoCard {
     public Type type;
     public Value value;
     private String card;
+    private int cardPoints;
 
     public UnoCard(Type type, Value value) {
+
         this.type = type;
         this.value = value;
         card = type.name() + value.name();
+        cardPoints = value.points; // need to check if this works
+    }
+
+    public int getCardPoints() {
+        return cardPoints;
     }
 
     public UnoCard(Value value) {
@@ -43,4 +50,5 @@ public class UnoCard {
     public String toString() {
         return card;
     }
+
 }
