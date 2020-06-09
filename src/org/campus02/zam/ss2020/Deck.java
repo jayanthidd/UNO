@@ -15,34 +15,34 @@ public class Deck {
         this.value = Value.values();
         this.deck = new Stack<>();
         String card;
-        for (Type t : type) {
-            if (t.name().contains("WILD")){
-                card = t.name();
+        for (Value v : value) {
+            if (v.name().contains("WILD")) {
+                card = v.name();
                 deck.push(card);
                 deck.push(card);
                 deck.push(card);
                 deck.push(card);
-
             }
-            else {
-                for (Value v : value) {
-                    card = t.name() + "_" + v.name();
-                    if(card.contains("ZERO")){
-                        deck.push(card);
+             for (Type t : type) {
+                 card = t.name() + "_" + v.name();
+                 if (!card.contains("WILD")) {
+                     if (card.contains("ZERO")) {
+                         deck.push(card);
 
-                    }else {
-                        deck.push(card);
-                        deck.push(card);
-                    }
-                }
-            }
+                     } else {
+                         deck.push(card);
+                         deck.push(card);
+                     }
+                 }
+             }
         }
+        System.out.println(deck);
     }
 
     public void shuffle () {
         ArrayList<String> sd = new ArrayList<>();
         Collections.shuffle(deck);
-        //System.out.println(deck);
+        System.out.println(deck);
     }
 
     public ArrayList<String> dealCards() {
