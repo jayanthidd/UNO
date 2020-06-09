@@ -22,8 +22,11 @@ public class PlayerManagement {
     }
 
     public void completePlayers() {
-        //size must not be zero
+        
         int size = players.size();
+        if (players.size() == 0){
+            System.out.println("There should be at least one human player");
+        }
         if (size == 4) {
             System.out.println("There are 4 players");
         }
