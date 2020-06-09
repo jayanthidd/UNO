@@ -20,12 +20,20 @@ public class Deck {
                 card = t.name();
                 deck.push(card);
                 deck.push(card);
+                deck.push(card);
+                deck.push(card);
+
             }
             else {
                 for (Value v : value) {
                     card = t.name() + "_" + v.name();
-                    deck.push(card);
-                    deck.push(card);
+                    if(card.contains("ZERO")){
+                        deck.push(card);
+
+                    }else {
+                        deck.push(card);
+                        deck.push(card);
+                    }
                 }
             }
         }
