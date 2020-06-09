@@ -43,6 +43,7 @@ public class PlayerManagement {
     }
 
     public void setPoints (Player p) {
+        p.points = 15; //just a change
 
     }
 }
