@@ -13,7 +13,7 @@ public enum Type {
     public static Type getTypes(int i) {
         return Type.types[i];
     }
-};
+}
 
 
 

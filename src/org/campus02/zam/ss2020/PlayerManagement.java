@@ -2,12 +2,13 @@ package org.campus02.zam.ss2020;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class PlayerManagement {
-    ArrayList<Player> players;// linkedlist
+    LinkedList<Player> players;// linkedlist
 
     public PlayerManagement() {
-        this.players = new ArrayList<>();
+        this.players = new LinkedList<>();
     }
 
     public void addPlayer(Player p) {
