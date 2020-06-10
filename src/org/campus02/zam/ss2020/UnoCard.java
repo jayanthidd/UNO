@@ -17,10 +17,6 @@ public class UnoCard {
         cardPoints = value.points; // need to check if this works
     }
 
-    public void createDeck() {
-
-    }
-
     public int getCardPoints() {
         return cardPoints;
     }

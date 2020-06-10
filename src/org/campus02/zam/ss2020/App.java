@@ -38,17 +38,18 @@ public class App {
 
     private void initializeGame() {
     //receive player names DONE and create robots, if required (I dont know how)
-
-        System.out.println("Player number one Name: ");
-        String firstPlayer = input.next();
-        System.out.println("Player number two Name: ");
-        String secondPlayer = input.next();
-        System.out.println("Player number three Name: ");
-        String thirdPlayer = input.next();
-        System.out.println("Player number four Name: ");
-        String fourthPlayer = input.next();
-
-        System.out.println("the players are: 1) " +firstPlayer + " 2) " +secondPlayer + " 3) " +thirdPlayer + " 4) " +fourthPlayer);
+        UnoGame game = new UnoGame();
+        for (int i = 0; i< 4 ; i++) {
+            System.out.print("Player Name: ");
+            String Player = input.next();
+            if (Player.equals("stop")){
+                System.out.println("Bots will be added to complete the players!");
+                break;
+            }
+            Player p = new HumanPlayer(Player);
+            game.players.add(p);
+        }
+        game.completePlayers();
 
         //Create order of players --- needs to be shuffled
         //Create a Deck (its on Class UnoGame)

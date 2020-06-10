@@ -1,9 +1,6 @@
 package org.campus02.zam.ss2020;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 public class UnoGame {
     LinkedList<Player> players;// linkedlist
@@ -15,7 +12,6 @@ public class UnoGame {
         this.players = new LinkedList<>();
         this.discardPile = new ArrayList<>();
         this.deckPile = new Deck().deck;
-
     }
 
     public void addPlayer(Player p) {
@@ -27,6 +23,7 @@ public class UnoGame {
             players.add(p);
         }
     }
+
     public boolean isAllowed(UnoCard card, UnoCard opencard, Player player) {
         if (card.toString().contains("WILD")){
             if (player.getHand().contains(opencard.value)||player.getHand().contains(opencard.type)){
@@ -79,6 +76,7 @@ public class UnoGame {
                 players.add(new Robot("Robot %d", i));
             }
         }
+        System.out.println(Arrays.toString(players.toArray()));
     }
 
     public HashMap<String, Integer> playerScores() {
