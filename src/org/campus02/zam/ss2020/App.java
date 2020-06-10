@@ -1,9 +1,11 @@
 package org.campus02.zam.ss2020;
 
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class App {
+    UnoGame game = new UnoGame();
     private final Scanner input;
     private final PrintStream output;
 
@@ -38,7 +40,7 @@ public class App {
 
     private void initializeGame() {
     //receive player names DONE and create robots, if required (I dont know how)
-        UnoGame game = new UnoGame();
+
         for (int i = 0; i< 4 ; i++) {
             System.out.print("Player Name: ");
             String Player = input.next();
@@ -51,6 +53,9 @@ public class App {
         }
         game.completePlayers();
 
+        System.out.println("This is the order in which players will play :");
+        System.out.println(game.players);
+
         //Create order of players --- needs to be shuffled
         //Create a Deck (its on Class UnoGame)
         //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame)
@@ -58,6 +63,8 @@ public class App {
     }
 
     private void initializeRound() {
+        Collections.shuffle(game.players);
+        game.dealCards();
     //shuffle cards
     // Deal cards among players
     //create discard pile and open the first card

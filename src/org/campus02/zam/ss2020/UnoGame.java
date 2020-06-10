@@ -64,15 +64,17 @@ public class UnoGame {
 
      */
 
-    public void dealCards(Player player) {
+    public void dealCards() {
 
         ArrayList<UnoCard> deal = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            UnoCard card = deck.deck.pop();
-            deal.add(card);
+        for (Player p : players) {
+            for (int i = 0; i < 7; i++) {
+                UnoCard card = deck.deck.pop();
+                deal.add(card);
+            }
+            //System.out.println(deck.size());
+            p.setHand(deal);
         }
-        //System.out.println(deck.size());
-        player.setHand(deal);
     }
 
     public void penalty(Player p, int cards) {
@@ -95,7 +97,7 @@ public class UnoGame {
             System.out.println("There are 4 players");
         } else{
             for (int i = size; i < 4; i++) {
-                players.add(new Robot("Robot %d", i));
+                players.add(new Robot(String.format("Robot%2d", i)));
                 System.out.println();
             }
         }
