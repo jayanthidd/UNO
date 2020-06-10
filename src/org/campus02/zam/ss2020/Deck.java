@@ -15,7 +15,7 @@ public class Deck {
         this.value = Value.values();
         this.deck = new Stack<>();
         UnoCard card;
-        for (Value v : value){
+        for (Value v : Value.values()){
             if (v.name().contains("WILD")){
                 card = new UnoCard(v);
                 deck.push(card);
@@ -24,7 +24,7 @@ public class Deck {
                 deck.push(card);
             }
             else {
-                for (Type t : type) {
+                for (Type t : Type.values()) {
                     if (!v.name().contains("WILD")) {
                         if (v.name().contains("ZERO")) {
                             card = new UnoCard(t, v);

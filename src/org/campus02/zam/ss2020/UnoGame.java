@@ -3,12 +3,19 @@ package org.campus02.zam.ss2020;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Stack;
 
-public class PlayerManagement {
+public class UnoGame {
     LinkedList<Player> players;// linkedlist
+    private Deck deck;
+    private ArrayList<UnoCard> discardPile;
+    private Stack<UnoCard> deckPile;
 
-    public PlayerManagement() {
+    public UnoGame() {
         this.players = new LinkedList<>();
+        this.discardPile = new ArrayList<>();
+        this.deckPile = new Deck().deck;
+
     }
 
     public void addPlayer(Player p) {
@@ -20,6 +27,43 @@ public class PlayerManagement {
             players.add(p);
         }
     }
+    public boolean isAllowed(UnoCard card, UnoCard opencard, Player player) {
+        if (card.toString().contains("WILD")){
+            if (player.getHand().contains(opencard.value)||player.getHand().contains(opencard.type)){
+                penalty(player, 1);
+                return false;
+            }
+            else return true;
+        }
+        else if (card.value == opencard.value || card.type == opencard.type || card.toString().contains("WILD")){
+            return true;
+        }
+        else {
+            penalty(player,1);
+            return false;
+        }
+    }
+
+    public void dealCards(Player player) {
+
+        ArrayList<UnoCard> deal = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            UnoCard card = deck.deck.pop();
+            deal.add(card);
+        }
+        //System.out.println(deck.size());
+        player.setHand(deal);
+    }
+
+    public void penalty (Player p, int cards) {
+        for (int i = 0; i < cards; i++) {
+            ArrayList<UnoCard> hand = p.getHand();
+            hand.add(deckPile.pop());
+            p.setHand(hand);
+
+        }
+    }
+
 
     public void completePlayers() {
         
@@ -43,14 +87,6 @@ public class PlayerManagement {
             scores.put(p.getName(), p.getPoints());
         }
         return scores;
-    }
-
-    public void setPoints (Player p) {
-        int pts = 0;
-        ArrayList <UnoCard>hand = p.getHand();
-                for (UnoCard u : hand) {
-            pts = u.getCardPoints();
-        }
     }
 
     public static void main(String[] args) {
@@ -80,7 +116,7 @@ public class PlayerManagement {
         elisabeth.setPoints(elisabeth.getHand());
         System.out.println(elisabeth.getPoints());
 
-        PlayerManagement pm = new PlayerManagement();
+        UnoGame pm = new UnoGame();
         pm.addPlayer(jay);
         pm.addPlayer(Emina);
         pm.addPlayer(iro);
