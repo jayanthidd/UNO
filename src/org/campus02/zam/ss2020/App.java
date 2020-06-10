@@ -60,8 +60,9 @@ public class App {
     }
 
     private void printState() {
+        System.out.println();
 
-        // Print(show) the Top Card of the playing pile
+        // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 
     }

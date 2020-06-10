@@ -89,6 +89,17 @@ public class UnoGame {
         return scores;
     }
 
+    public ArrayList<UnoCard> combineHandsFromAllPlayers(){
+        ArrayList<UnoCard> combinedHand = new ArrayList<>();
+        for (Player p : players){
+            combinedHand.addAll(p.getHand());
+        }
+
+        return combinedHand;
+    }
+
+
+
     public static void main(String[] args) {
         Player jay = new HumanPlayer("Jayanthi");
         Deck d = new Deck();
