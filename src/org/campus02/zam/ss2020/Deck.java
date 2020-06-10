@@ -53,7 +53,6 @@ public class Deck {
         Collections.shuffle(deck);
         System.out.println(deck);
     }
-
     public ArrayList<UnoCard> dealCards() {
 
         ArrayList<UnoCard> deal = new ArrayList<>();
@@ -63,12 +62,5 @@ public class Deck {
         }
         System.out.println(deck.size());
         return deal;
-    }
-
-    public static void main(String[] args) {
-        Deck d = new Deck();
-        d.shuffle();
-        System.out.println(d.deck.size());
-        System.out.println(d.dealCards());
     }
 }
