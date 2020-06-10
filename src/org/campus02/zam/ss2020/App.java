@@ -47,7 +47,7 @@ public class App {
                 break;
             }
             Player p = new HumanPlayer(Player);
-            game.players.add(p);
+            game.addPlayer(p);
         }
         game.completePlayers();
 

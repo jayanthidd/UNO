@@ -33,7 +33,14 @@ public abstract class Player {
         this.hand = hand;
     }
 
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", points=" + points +
+                ", hand=" + hand +
+                '}';
+    }
 
     public void setPoints(ArrayList<UnoCard> cardsLeft) { // int calculatePoints (treba biti u management)
         int pts = 0;

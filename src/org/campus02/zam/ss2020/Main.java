@@ -11,7 +11,10 @@ public class Main {
         System.out.println("UNO wird nun gestartet ...");
         app.Run();
 
+
         input.close();
         System.out.println("UNO wird beendet ...");
+
+
     }
 }
