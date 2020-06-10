@@ -14,14 +14,13 @@ public class UnoGame {
         this.deckPile = new Deck().deck;
     }
 
-    public ArrayList<UnoCard> getDiscardPile() {
+    public LinkedList<UnoCard> getDiscardPile() {
         return discardPile;
     }
 
     public void addPlayer(Player p) {
         if (players.contains(p)) {
             System.out.println("Player already exists! Try another name!");
-            return;
         } else {
             players.add(p);
         }
@@ -65,14 +64,14 @@ public class UnoGame {
      */
 
     public void dealCards() {
-
-        ArrayList<UnoCard> deal = new ArrayList<>();
         for (Player p : players) {
+            ArrayList<UnoCard> deal = new ArrayList<>();
             for (int i = 0; i < 7; i++) {
                 UnoCard card = deckPile.pop();
                 deal.add(card);
             }
             //System.out.println(deck.size());
+            System.out.println(deal);
             p.setHand(deal);
         }
     }

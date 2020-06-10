@@ -56,17 +56,25 @@ public class App {
         System.out.println("This is the order in which players will play :");
         System.out.println(game.players);
 
+
         //Create order of players --- needs to be shuffled
         //Create a Deck (its on Class UnoGame)
         //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame)
     }
 
     private void initializeRound() {
-
+        Collections.shuffle(game.deckPile);
         game.dealCards();
         System.out.println();
         game.discardPile.add(game.deckPile.pop());
-        System.out.println("The Open Card is : " + game.discardPile.peek());
+        while (!roundEnded()) {
+            for (Player p : game.players) {
+                System.out.println("Player " + p.getName() + " plays!");
+                System.out.println("Your cards are : " + p.getHand());
+                printState();
+                updateState();
+            }
+        }
     //shuffle cards
     // Deal cards among players
     //create discard pile and open the first card
@@ -77,7 +85,7 @@ public class App {
     }
 
     private void updateState() {
-
+        readUserInput();
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
         // Update the state and show the current print state
@@ -85,7 +93,8 @@ public class App {
     }
 
     private void printState() {
-        System.out.println();
+
+        System.out.println("The Open Card is : " + game.discardPile.peek());
 
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
