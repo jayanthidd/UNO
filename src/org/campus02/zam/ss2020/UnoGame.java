@@ -4,13 +4,13 @@ import java.util.*;
 
 public class UnoGame {
     LinkedList<Player> players;// linkedlist
-    private Deck deck;
-    private ArrayList<UnoCard> discardPile;
-    private Stack<UnoCard> deckPile;
+    Deck deck;
+    LinkedList<UnoCard> discardPile;
+    Stack<UnoCard> deckPile;
 
     public UnoGame() {
         this.players = new LinkedList<>();
-        this.discardPile = new ArrayList<>();
+        this.discardPile = new LinkedList<>();
         this.deckPile = new Deck().deck;
     }
 
@@ -65,7 +65,7 @@ public class UnoGame {
         ArrayList<UnoCard> deal = new ArrayList<>();
         for (Player p : players) {
             for (int i = 0; i < 7; i++) {
-                UnoCard card = deck.deck.pop();
+                UnoCard card = deckPile.pop();
                 deal.add(card);
             }
             //System.out.println(deck.size());
