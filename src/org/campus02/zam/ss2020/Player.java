@@ -23,7 +23,7 @@ public abstract class Player {
 
     public int getPoints() {
         return points;
-    }
+    } // mozemo dropati
 
     public ArrayList<UnoCard> getHand() {
         return hand;
@@ -33,12 +33,14 @@ public abstract class Player {
         this.hand = hand;
     }
 
-    public void setPoints(ArrayList<UnoCard> cardsLeft) {
+
+
+    public void setPoints(ArrayList<UnoCard> cardsLeft) { // int calculatePoints (treba biti u management)
         int pts = 0;
         for (UnoCard u : cardsLeft) {
             pts += u.getCardPoints();
         }
-        this.points = pts;
+        this.points = pts;                              // return pts;
     }
 
     public boolean hasWon (String name) {
