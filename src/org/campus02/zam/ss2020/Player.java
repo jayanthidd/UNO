@@ -37,11 +37,8 @@ public abstract class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", points=" + points +
-                ", hand=" + hand +
-                '}';
+        return "Player Name =" + name;
+
     }
 
     public void setPoints(ArrayList<UnoCard> cardsLeft) { // int calculatePoints (treba biti u management)
@@ -49,7 +46,7 @@ public abstract class Player {
         for (UnoCard u : cardsLeft) {
             pts += u.getCardPoints();
         }
-        this.points = pts;                              // return pts;
+        this.points = pts;                              // We will need to write SQL code to connect to the database
     }
 
     public boolean hasWon (String name) {
