@@ -38,28 +38,6 @@ public class Deck {
                 }
             }
         }
-//        for (Value v : value) {
-//
-//                 if (v.name().contains("WILD")) {
-//                     card = new UnoCard(v);
-//                     deck.push(card);
-//                     deck.push(card);
-//                     deck.push(card);
-//                     deck.push(card);
-//                 }
-//                 else{
-//                     for (Type t : type) {
-//                 card = new UnoCard(t, v);
-//                     if (card.equals("ZERO")) {
-//                         deck.push(card);
-//
-//                     } else {
-//                         deck.push(card);
-//                         deck.push(card);
-//                     }
-//                 }
-//             }
-//        }
         System.out.println();
     }
 
@@ -83,7 +61,7 @@ public class Deck {
             UnoCard card = deck.pop();
             deal.add(card);
         }
-        //System.out.println(deck.size());
+        System.out.println(deck.size());
         return deal;
     }
 

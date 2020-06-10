@@ -51,9 +51,16 @@ public class App {
 
     private void updateState() {
 
+        // Read the user input (what will he play?)
+        // Validate the User input (can he play it?)
+        // Update the state and show the current print state
+
     }
 
     private void printState() {
+
+        // Print(show) the Top Card of the playing pile
+        // Print(show) the current hand of the player
 
     }
 
