@@ -14,6 +14,10 @@ public class UnoGame {
         this.deckPile = new Deck().deck;
     }
 
+    public ArrayList<UnoCard> getDiscardPile() {
+        return discardPile;
+    }
+
     public void addPlayer(Player p) {
         if (players.contains(p)) {
             System.out.println("Player already exists! Try another name!");
@@ -38,7 +42,7 @@ public class UnoGame {
     }
 
     public boolean hasToPickUpCards(Player player, UnoCard openCard) {
-        if (openCard.toString().contains("DRAWTWO")) {    //HERE we need to add also Method boolean CalledUno? if false, draw 2 as well
+        if (openCard.toString().contains("DRAWTWO") || !player.saysUNO()) {
             penalty(player, 2);
             return true;
 

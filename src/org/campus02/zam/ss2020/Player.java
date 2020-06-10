@@ -7,7 +7,7 @@ public abstract class Player {
     private int points;
     private ArrayList<UnoCard> hand;
     private boolean isMyTurn = false;
-    private boolean saidUNO = false;
+    private boolean saidUNO = true;
 
     public Player(String name) {
         this.name = name;
@@ -63,7 +63,20 @@ public abstract class Player {
         return isMyTurn;
     }
 
-    public void saysUNO(){
-        saidUNO = true;
+    public boolean saysUNO(){
+        return saidUNO;
     }
+
+    /*public void playsCard (UnoCard card, UnoCard openCard, Player player) {
+
+        UnoGame game = new UnoGame();
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).equals(openCard) && game.isAllowed(card, openCard, player)) {
+                hand.remove(i);
+
+            }
+        }
+    }
+    
+     */
 }
