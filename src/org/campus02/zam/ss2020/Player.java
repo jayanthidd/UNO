@@ -6,6 +6,8 @@ public abstract class Player {
     private String name;
     private int points;
     private ArrayList<UnoCard> hand;
+    private boolean isMyTurn = false;
+    private boolean saidUNO = false;
 
     public Player(String name) {
         this.name = name;
@@ -55,5 +57,13 @@ public abstract class Player {
             return true;
         }
         return false;
+    }
+
+    public boolean isMyTurn(){
+        return isMyTurn;
+    }
+
+    public void saysUNO(){
+        saidUNO = true;
     }
 }

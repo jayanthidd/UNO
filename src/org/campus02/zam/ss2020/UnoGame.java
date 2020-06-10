@@ -117,6 +117,18 @@ public class UnoGame {
     }
 
 
+    public void setSaidUNO() {
+        for (Player p : players) {
+            if (p.isMyTurn()) {
+                if (p.getHand().size() == 2) {
+                    p.saysUNO();
+                    System.out.println(p.getName() + " said UNO");
+                }
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
         Player jay = new HumanPlayer("Jayanthi");
         Deck d = new Deck();
@@ -155,6 +167,8 @@ public class UnoGame {
         System.out.println(pm.playerScores());
 
     }
+
+
 
 
 }
