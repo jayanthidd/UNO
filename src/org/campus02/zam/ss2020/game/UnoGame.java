@@ -1,4 +1,10 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.game;
+
+import org.campus02.zam.ss2020.cards.Deck;
+import org.campus02.zam.ss2020.cards.UnoCard;
+import org.campus02.zam.ss2020.players.HumanPlayer;
+import org.campus02.zam.ss2020.players.Player;
+import org.campus02.zam.ss2020.players.Robot;
 
 import java.util.*;
 
@@ -57,10 +63,8 @@ public class UnoGame {
             player
         }else if (openCard.toString().contains("SKIP")) {
             player
-
         }return false;
     }
-
      */
 
     public void dealCards() {

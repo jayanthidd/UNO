@@ -1,4 +1,4 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.cards;
 
 public enum Type {
     RED,

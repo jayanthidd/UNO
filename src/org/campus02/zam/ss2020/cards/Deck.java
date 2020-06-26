@@ -1,14 +1,13 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.cards;
 
-import javax.accessibility.AccessibleRelation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
 public class Deck {
-    Type[] type;
-    Value[] value;
-    Stack<UnoCard> deck;
+    private Type[] type;
+    private Value[] value;
+    public Stack<UnoCard> deck;
 
     public Deck() {
         this.type =  Type.values();

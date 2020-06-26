@@ -1,6 +1,4 @@
-package org.campus02.zam.ss2020;
-
-import java.util.Stack;
+package org.campus02.zam.ss2020.cards;
 
 public class UnoCard {
 
@@ -50,5 +48,4 @@ public class UnoCard {
     public String toString() {
         return card;
     }
-
 }

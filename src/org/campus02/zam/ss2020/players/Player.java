@@ -1,4 +1,6 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.players;
+
+import org.campus02.zam.ss2020.cards.UnoCard;
 
 import java.util.ArrayList;
 

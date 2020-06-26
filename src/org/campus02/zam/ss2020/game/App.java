@@ -1,4 +1,7 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.game;
+
+import org.campus02.zam.ss2020.players.HumanPlayer;
+import org.campus02.zam.ss2020.players.Player;
 
 import java.io.PrintStream;
 import java.util.Collections;
@@ -8,13 +11,15 @@ public class App {
     UnoGame game = new UnoGame();
     private final Scanner input;
     private final PrintStream output;
+    private boolean roundEnded;
+    private String userInput;
+    private String currentPlayer;
 
     public App(Scanner input, PrintStream output){
         this.input = input;
         this.output = output;
+        this.roundEnded = false;
     }
-
-
 
     public void Run() {
         initializeGame();
@@ -23,9 +28,20 @@ public class App {
                 initializeRound();
                 printState();
 
-                while (!roundEnded()) {
+                while (!roundEnded) {
+                    for (Player p : game.players) {
+                        System.out.println("Player " + p.getName() + " plays!");
+                        System.out.println("Your cards are : " + p.getHand());
+                        if (!p.getName().contains("Robot")) {
+                            readUserInput();
+                        }
+                        updateState(p);
+                        printState();
+                        if (p.getHand().isEmpty()){
+                            roundEnded=true;
+                        }
+                    }
                     readUserInput();
-                    updateState();
                     printState();
 
                     Thread.sleep(100);
@@ -67,25 +83,19 @@ public class App {
         game.dealCards();
         System.out.println();
         game.discardPile.add(game.deckPile.pop());
-        while (!roundEnded()) {
-            for (Player p : game.players) {
-                System.out.println("Player " + p.getName() + " plays!");
-                System.out.println("Your cards are : " + p.getHand());
-                printState();
-                updateState();
-            }
-        }
+
     //shuffle cards
     // Deal cards among players
     //create discard pile and open the first card
     }
 
     private void readUserInput() {
-
+        System.out.println("What card would you like to play? :");
+        String card = input.next();
     }
 
-    private void updateState() {
-        readUserInput();
+    private void updateState(Player p) {
+
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
         // Update the state and show the current print state

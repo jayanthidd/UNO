@@ -1,6 +1,8 @@
-package org.campus02.zam.ss2020;
+package org.campus02.zam.ss2020.game;
 
-import java.util.Scanner;
+import org.campus02.zam.ss2020.game.App;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +16,6 @@ public class Main {
 
         input.close();
         System.out.println("UNO wird beendet ...");
-
 
     }
 }
