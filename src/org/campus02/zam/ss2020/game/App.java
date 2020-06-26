@@ -1,5 +1,6 @@
 package org.campus02.zam.ss2020.game;
 
+import org.campus02.zam.ss2020.cards.UnoCard;
 import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
@@ -13,7 +14,7 @@ public class App {
     private final PrintStream output;
     private boolean roundEnded;
     private String userInput;
-    private String currentPlayer;
+    private Player currentPlayer;
 
     public App(Scanner input, PrintStream output){
         this.input = input;
@@ -30,12 +31,13 @@ public class App {
 
                 while (!roundEnded) {
                     for (Player p : game.players) {
+                        currentPlayer = p;
                         System.out.println("Player " + p.getName() + " plays!");
                         System.out.println("Your cards are : " + p.getHand());
                         if (!p.getName().contains("Robot")) {
                             readUserInput();
                         }
-                        updateState(p);
+                        updateState();
                         printState();
                         if (p.getHand().isEmpty()){
                             roundEnded=true;
@@ -91,10 +93,38 @@ public class App {
 
     private void readUserInput() {
         System.out.println("What card would you like to play? :");
-        String card = input.next();
+        userInput = input.next();
     }
 
-    private void updateState(Player p) {
+    private void updateState() {
+
+        if (currentPlayer.getName().contains("Robot")){
+            for (UnoCard c : currentPlayer.getHand()){
+
+            }
+        }
+        else {
+            if (userInput.equals("UNO")||userInput.equals("uno")){
+                if(currentPlayer.getHand().size()==2){
+                    currentPlayer.setSaidUNO(true);
+                    System.out.println("Your UNO status has been updated");
+                    readUserInput();
+                }
+                else {
+                    System.out.println("You can say Uno only when you have 2 cards left!");
+                    readUserInput();
+                }
+            } else {
+                if(game.isAllowed(userInput,game.deckPile.peek(), currentPlayer)) {
+                    for (UnoCard c : currentPlayer.getHand()){
+                        if (c.equals(userInput)){
+                            game.deckPile.push(c);
+                            currentPlayer.getHand().remove(c);
+                        }
+                    }
+                }
+            }
+        }
 
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)

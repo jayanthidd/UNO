@@ -66,6 +66,10 @@ public abstract class Player {
         return saidUNO;
     }
 
+    public void setSaidUNO(boolean saidUNO) {
+        this.saidUNO = saidUNO;
+    }
+
     /*public void playsCard (UnoCard card, UnoCard openCard, Player player) {
 
         UnoGame game = new UnoGame();

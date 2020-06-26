@@ -32,21 +32,30 @@ public class UnoGame {
         }
     }
 
-    public boolean isAllowed(UnoCard card, UnoCard openCard, Player player) {
-        if (card.toString().contains("WILD")) {
+    public boolean isAllowed(String card, UnoCard openCard, Player player) {
+        String[] playcard = card.split("_");
+        String value = "";
+        String type = "";
+        if (!card.contains("WILD")){
+            type = playcard[0];
+            value = playcard[1];
+        }
+        if (card.contains("WILD")) {
             if (player.getHand().contains(openCard.value) || player.getHand().contains(openCard.type)) {
                 penalty(player, 1);
+                System.out.println("Cannot play this card.  Penalty!");
                 return false;
             } else return true;
-        } else if (card.value == openCard.value || card.type == openCard.type || card.toString().contains("WILD")) {
+        } else if (openCard.value.equals(value) || openCard.type.equals(type) || card.contains("WILD")) {
             return true;
         } else {
             penalty(player, 1);
+            System.out.println("Cannot play this card.  Penalty!");
             return false;
         }
     }
 
-    public boolean hasToPickUpCards(Player player, UnoCard openCard) {
+    public boolean pickUpCards(Player player, UnoCard openCard) {
         if (openCard.toString().contains("DRAWTWO") || !player.saysUNO()) {
             penalty(player, 2);
             return true;
