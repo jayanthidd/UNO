@@ -40,13 +40,13 @@ public class UnoGame {
         else {
             if(isAllowed(playedCard, openCard, currentPlayer)){
                 if (playedCard.equals("WILD")||playedCard.equals("WILD_FOUR")){
-                    playWild();
+                    allowWild();
                 }
             }
         }
     }
 
-    private void playWild() {
+    private void allowWild() {
         System.out.print("What color would you like to change to? : ");
         Scanner scanner = new Scanner(System.in);
         if (Type.values().toString().contains(scanner.next())) {
@@ -54,11 +54,14 @@ public class UnoGame {
         }
         else {
             System.out.println("Invalid Entry!");
-            playWild();
+            allowWild();
         }
     }
 
     public boolean isAllowed(UnoCard playedCard, UnoCard openCard, Player player) {
+        if (openCard.toString().contains("WILD")){
+            return validateWild(playedCard);
+        }
         if (playedCard.toString().contains("WILD")) {
             if (player.getHand().contains(openCard.value) || player.getHand().contains(openCard.type)) {
                 penalty(player, 1);
@@ -70,6 +73,17 @@ public class UnoGame {
         } else {
             System.out.println("You can't play that card. Penalty!");
             penalty(player, 1);
+            return false;
+        }
+    }
+
+    private boolean validateWild(UnoCard playedCard) {
+        if (discardPile.size()==1){
+            return true;
+        }
+        else if(playedCard.type.toString().equals(wildColor)) {
+            return true;
+        } else {
             return false;
         }
     }
