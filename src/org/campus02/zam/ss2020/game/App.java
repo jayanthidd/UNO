@@ -41,6 +41,7 @@ public class App {
                         printState();
                         if (p.getHand().isEmpty()){
                             roundEnded=true;
+
                         }
                     }
                     readUserInput();
@@ -92,39 +93,53 @@ public class App {
     }
 
     private void readUserInput() {
-        System.out.println("What card would you like to play? :");
+        System.out.print("What card would you like to play? :");
         userInput = input.next();
     }
 
     private void updateState() {
-
-        if (currentPlayer.getName().contains("Robot")){
-            for (UnoCard c : currentPlayer.getHand()){
-
+        UnoCard currentCard = null;
+        for (UnoCard c : currentPlayer.getHand()) {
+            if (c.toString().equals(userInput)) {
+                currentCard = c;
             }
         }
-        else {
-            if (userInput.equals("UNO")||userInput.equals("uno")){
-                if(currentPlayer.getHand().size()==2){
-                    currentPlayer.setSaidUNO(true);
-                    System.out.println("Your UNO status has been updated");
-                    readUserInput();
-                }
-                else {
-                    System.out.println("You can say Uno only when you have 2 cards left!");
-                    readUserInput();
-                }
-            } else {
-                if(game.isAllowed(userInput,game.deckPile.peek(), currentPlayer)) {
-                    for (UnoCard c : currentPlayer.getHand()){
-                        if (c.equals(userInput)){
-                            game.deckPile.push(c);
-                            currentPlayer.getHand().remove(c);
-                        }
-                    }
+        game.processCard(currentPlayer, currentCard, game.discardPile.peek());
+
+        if(!currentPlayer.getName().contains("robot"))
+
+        if (currentCard == null) {
+            System.out.println("Invalid entry");
+            readUserInput();
+        } else {
+            if (game.isAllowed(currentCard, game.discardPile.peek(), currentPlayer)) {
+                currentPlayer.getHand().remove(currentCard);
+                game.discardPile.push(currentCard);
+                if (currentCard.equals("WILD")){
+
                 }
             }
+
         }
+//        if (currentPlayer.getName().contains("Robot")){
+//            UnoCard robotCard = game.robotPlays(currentPlayer, currentCard);
+//            if (robotCard==null) {
+//                currentPlayer.pickAndPlay(currentPlayer, currentCard, game.deck.deck.pop());
+//            }
+//
+//        }
+//        if (userInput.equals("UNO")||userInput.equals("uno")){
+//            if(currentPlayer.getHand().size()==2){
+//                currentPlayer.setSaidUNO(true);
+//                System.out.println("Your UNO status has been updated");
+//                readUserInput();
+//            }
+//            else {
+//                System.out.println("You can say Uno only when you have 2 cards left!");
+//                readUserInput();
+//            }
+//        } else {
+//        }
 
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
@@ -133,7 +148,6 @@ public class App {
     }
 
     private void printState() {
-
         System.out.println("The Open Card is : " + game.discardPile.peek());
 
         // Print(show) the Top Card of the discard pile
@@ -150,6 +164,6 @@ public class App {
     }
 
     private void printFinalScore(){
-
+        System.out.println(game.playerScores());
     }
 }

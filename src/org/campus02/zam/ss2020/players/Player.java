@@ -10,11 +10,15 @@ public abstract class Player {
     private ArrayList<UnoCard> hand;
     private boolean isMyTurn = false;
     private boolean saidUNO = true;
+    private boolean drawnCard = false;
 
     public Player(String name) {
         this.name = name;
         this.points = 0;
         this.hand = new ArrayList<>();
+    }
+    public void setDrawnCard(boolean b){
+        this.drawnCard=b;
     }
 
     public String getName() {

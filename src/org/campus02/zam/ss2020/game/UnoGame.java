@@ -1,6 +1,7 @@
 package org.campus02.zam.ss2020.game;
 
 import org.campus02.zam.ss2020.cards.Deck;
+import org.campus02.zam.ss2020.cards.Type;
 import org.campus02.zam.ss2020.cards.UnoCard;
 import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
@@ -13,6 +14,7 @@ public class UnoGame {
     Deck deck;
     LinkedList<UnoCard> discardPile;
     Stack<UnoCard> deckPile;
+    String wildColor;
 
     public UnoGame() {
         this.players = new LinkedList<>();
@@ -31,26 +33,43 @@ public class UnoGame {
             players.add(p);
         }
     }
+    public void processCard(Player currentPlayer, UnoCard playedCard, UnoCard openCard){
+        if (currentPlayer.getName().contains("Robot")){
 
-    public boolean isAllowed(String card, UnoCard openCard, Player player) {
-        String[] playcard = card.split("_");
-        String value = "";
-        String type = "";
-        if (!card.contains("WILD")){
-            type = playcard[0];
-            value = playcard[1];
         }
-        if (card.contains("WILD")) {
+        else {
+            if(isAllowed(playedCard, openCard, currentPlayer)){
+                if (playedCard.equals("WILD")||playedCard.equals("WILD_FOUR")){
+                    playWild();
+                }
+            }
+        }
+    }
+
+    private void playWild() {
+        System.out.print("What color would you like to change to? : ");
+        Scanner scanner = new Scanner(System.in);
+        if (Type.values().toString().contains(scanner.next())) {
+            wildColor = scanner.next();
+        }
+        else {
+            System.out.println("Invalid Entry!");
+            playWild();
+        }
+    }
+
+    public boolean isAllowed(UnoCard playedCard, UnoCard openCard, Player player) {
+        if (playedCard.toString().contains("WILD")) {
             if (player.getHand().contains(openCard.value) || player.getHand().contains(openCard.type)) {
                 penalty(player, 1);
-                System.out.println("Cannot play this card.  Penalty!");
+                System.out.println("You can't play that card. Penalty!");
                 return false;
             } else return true;
-        } else if (openCard.value.equals(value) || openCard.type.equals(type) || card.contains("WILD")) {
+        } else if (playedCard.value == openCard.value || playedCard.type == openCard.type || playedCard.toString().contains("WILD")) {
             return true;
         } else {
+            System.out.println("You can't play that card. Penalty!");
             penalty(player, 1);
-            System.out.println("Cannot play this card.  Penalty!");
             return false;
         }
     }
@@ -94,7 +113,6 @@ public class UnoGame {
             ArrayList<UnoCard> hand = p.getHand();
             hand.add(deckPile.pop());
             p.setHand(hand);
-
         }
     }
 
@@ -113,7 +131,6 @@ public class UnoGame {
                 System.out.println();
             }
         }
-        System.out.println("There are 4 players:");
         System.out.println(Arrays.toString(players.toArray()));
     }
 
@@ -135,9 +152,9 @@ public class UnoGame {
     }
 
 
-    public void setSaidUNO() {
+    public void setSaidUNO(Player player) {
         for (Player p : players) {
-            if (p.isMyTurn()) {
+            if (p.equals(player)) {
                 if (p.getHand().size() == 2) {
                     p.saysUNO();
                     System.out.println(p.getName() + " said UNO");
@@ -146,6 +163,21 @@ public class UnoGame {
         }
     }
 
+    public UnoCard robotPlays (Player robot, UnoCard currentCard) {
+        for (UnoCard c : robot.getHand()) {
+            if (c.value.equals(currentCard.value)|| c.type.equals(currentCard.type)){
+                return c;
+            }
+            else {
+                for (UnoCard w : robot.getHand()){
+                    if (w.toString().contains("WILD")){
+                        return w;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         Player jay = new HumanPlayer("Jayanthi");
