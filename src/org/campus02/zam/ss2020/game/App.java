@@ -102,6 +102,7 @@ public class App {
         }else if (userInput.equals("DRAW")){
             game.drawCard(currentPlayer);
             readUserInput();
+            updateState();
         }else {
             UnoCard currentCard = null;
             for (UnoCard c : currentPlayer.getHand()) {

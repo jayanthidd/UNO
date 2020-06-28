@@ -57,7 +57,7 @@ public class UnoGame {
             System.out.println("You cannot play that card! Penalty!");
             penalty(currentPlayer, 1);
         }
-        if (playedCard.toString().equals("WILD_FOUR")||playedCard.toString().contains("DRAWTWO")){
+        if (playedCard.toString().equals("WILDFOUR")||playedCard.toString().contains("DRAWTWO")){
             cardsToBePickedUp = true;
         }
     }
@@ -86,7 +86,7 @@ public class UnoGame {
         }
         if (playedCard.toString().contains("WILD")) {
             return isWildAllowed(openCard, player);
-        } else if (playedCard.value == openCard.value || playedCard.type == openCard.type || playedCard.toString().contains("WILD")) {
+        } else if (playedCard.value == openCard.value || playedCard.type == openCard.type) {
             return true;
         } else
             return false;
@@ -127,13 +127,12 @@ public class UnoGame {
     public void pickUpCards(Player player) {
         if (discardPile.peek().toString().contains("DRAWTWO")) {
             penalty(player, 2);
-            System.out.println(player.getName() + " has picked up cards and has missed a turn");
-        } else if (discardPile.peek().toString().contains("WILD_FOUR")) {
+        } else if (discardPile.peek().toString().contains("WILDFOUR")) {
             penalty(player, 4);
-            System.out.println("-------------------------------------------------------------------");
-            System.out.println(player.getName() + " has picked up cards and has missed a turn");
-            System.out.println(player.getName()+"'s cards are : " + player.getHand());
         }
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println(player.getName() + " has picked up cards and has missed a turn");
+        System.out.println(player.getName()+"'s cards are : " + player.getHand());
         cardsToBePickedUp=false;
     }
 
