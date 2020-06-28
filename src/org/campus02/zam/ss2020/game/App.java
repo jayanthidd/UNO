@@ -28,32 +28,25 @@ public class App {
         try {
             do {
                 initializeRound();
-                printState();
-
                 while (!roundEnded) {
                     for (Player p : game.players) {
                         currentPlayer = p;
-                        System.out.println("Player " + p.getName() + " plays!");
-                        System.out.println("Your cards are : " + p.getHand());
-                        if (p.getName().contains("Robot")) {
-                            game.robotPlays(p,game.discardPile.peek());// need to write this method properly.  Currently, there is no logic.
+                        if (game.isCardsToBePickedUp()) {
+                            game.pickUpCards(p);
+                        } else if (p.getName().contains("Robot")) {
+                                game.robotPlays(p, game.discardPile.peek());// need to write this method properly.  Currently, there is no logic.
                         } else {
+                            printState();
                             readUserInput();
                             updateState();
                         }
-                        printState();
-                        if (p.getHand().isEmpty()){
-                            roundEnded=true;
-
+                        if (p.getHand().isEmpty()) {
+                            roundEnded = true;
                         }
                     }
-                    readUserInput();
-                    printState();
-
-                    Thread.sleep(100);
                 }
+                Thread.sleep(100);
             } while (!gameEnded());
-
             printFinalScore();
         }catch (Exception ex){
             output.println(ex);
@@ -96,23 +89,19 @@ public class App {
     }
 
     private void readUserInput() {
-        if (game.discardPile.peek().toString().contains("DRAWTWO")||game.discardPile.peek().toString().contains("WILDFOUR") && game.isCardsPickedUp()!=false){
-            return;
-        }
+        System.out.println("Your cards are : " + currentPlayer.getHand());
         System.out.print("What card would you like to play? :");
         userInput = input.next();
     }
 
     private void updateState() {
-        if(game.discardPile.peek().toString().contains("DRAWTWO")||game.discardPile.peek().toString().contains("WILDFOUR"))
-            if (!game.isCardsPickedUp()) {
-                game.pickUpCards(currentPlayer, game.discardPile.peek());
-                game.setCardsPickedUp(true);
-            }
         if(userInput.contains("UNO")){
             if(!game.checkUno(currentPlayer)){
                 readUserInput();
             }
+        }else if (userInput.equals("DRAW")){
+            game.drawCard(currentPlayer);
+            readUserInput();
         }else {
             UnoCard currentCard = null;
             for (UnoCard c : currentPlayer.getHand()) {
@@ -120,14 +109,11 @@ public class App {
                     currentCard = c;
                 }
             }
-            if(!game.processCard(currentPlayer, currentCard, game.discardPile.peek())){
-                System.out.println("Not Allowed.  You miss a turn");
-            }
-
             if (currentCard == null) {
                 System.out.println("Invalid entry");
                 readUserInput();
             }
+            game.processCard(currentPlayer, currentCard, game.discardPile.peek());
         }
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
@@ -138,7 +124,7 @@ public class App {
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("The Open Card is : " + game.discardPile.peek());
-
+        System.out.println("Player " + currentPlayer.getName() + " plays!");
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 

@@ -19,13 +19,21 @@ public class UnoGame {
     Stack<UnoCard> discardPile;
     Stack<UnoCard> deckPile;
     String wildColor;
-    private boolean cardsPickedUp;
+    private boolean cardsToBePickedUp;
 
     public UnoGame() {
         this.players = new LinkedList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
-        this.cardsPickedUp=true;
+        this.cardsToBePickedUp=false;
+    }
+
+    public boolean isCardsToBePickedUp() {
+        return cardsToBePickedUp;
+    }
+
+    public void setCardsToBePickedUp(boolean cardsToBePickedUp) {
+        this.cardsToBePickedUp = cardsToBePickedUp;
     }
 
     public Stack<UnoCard> getDiscardPile() {
@@ -39,17 +47,24 @@ public class UnoGame {
             players.add(p);
         }
     }
-    public boolean processCard(Player currentPlayer, UnoCard playedCard, UnoCard openCard){
+    public void processCard(Player currentPlayer, UnoCard playedCard, UnoCard openCard){
         if(isAllowed(playedCard, openCard, currentPlayer)){
-            if (playedCard.equals("WILD")||playedCard.equals("WILD_FOUR")){
+            updatePlayedCard(currentPlayer, playedCard);
+            if (playedCard.toString().contains("WILD")){
                 allowWild();
             }
-            discardPile.push(playedCard);
-            currentPlayer.getHand().remove(playedCard);
-            setCardsPickedUp(false);
-            return true;
+        } else {
+            System.out.println("You cannot play that card! Penalty!");
+            penalty(currentPlayer, 1);
         }
-        return false;
+        if (playedCard.toString().equals("WILD_FOUR")||playedCard.toString().contains("DRAWTWO")){
+            cardsToBePickedUp = true;
+        }
+    }
+
+    private void updatePlayedCard(Player currentPlayer, UnoCard playedCard) {
+        discardPile.push(playedCard);
+        currentPlayer.getHand().remove(playedCard);
     }
 
     private void allowWild() {
@@ -70,15 +85,12 @@ public class UnoGame {
             return validateWild(playedCard);
         }
         if (playedCard.toString().contains("WILD")) {
-            allowWild();
             return isWildAllowed(openCard, player);
         } else if (playedCard.value == openCard.value || playedCard.type == openCard.type || playedCard.toString().contains("WILD")) {
             return true;
-        } else {
-            System.out.println("You can't play that card. Penalty!");
-            penalty(player, 1);
+        } else
             return false;
-        }
+
     }
 
     /**
@@ -95,13 +107,6 @@ public class UnoGame {
         } else return true;
     }
 
-    public boolean isCardsPickedUp() {
-        return cardsPickedUp;
-    }
-
-    public void setCardsPickedUp(boolean cardsPickedUp) {
-        this.cardsPickedUp = cardsPickedUp;
-    }
 
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
@@ -119,14 +124,17 @@ public class UnoGame {
         }
     }
 
-    public void pickUpCards(Player player, UnoCard openCard) {
-        if (openCard.toString().contains("DRAWTWO") || !player.saysUNO()) {
+    public void pickUpCards(Player player) {
+        if (discardPile.peek().toString().contains("DRAWTWO")) {
             penalty(player, 2);
-        } else if (openCard.toString().contains("WILDFOUR")) {
+            System.out.println(player.getName() + " has picked up cards and has missed a turn");
+        } else if (discardPile.peek().toString().contains("WILD_FOUR")) {
             penalty(player, 4);
+            System.out.println("-------------------------------------------------------------------");
+            System.out.println(player.getName() + " has picked up cards and has missed a turn");
+            System.out.println(player.getName()+"'s cards are : " + player.getHand());
         }
-        cardsPickedUp=true;
-        System.out.println(player +" picked up cards and misses a turn!");
+        cardsToBePickedUp=false;
     }
 
     /*public boolean playerMissesTurn (Player player, UnoCard openCard){
@@ -145,18 +153,17 @@ public class UnoGame {
                 UnoCard card = deckPile.pop();
                 deal.add(card);
             }
-            //System.out.println(deck.size());
-            System.out.println(deal);
             p.setHand(deal);
         }
     }
 
     public void penalty(Player p, int cards) {
+        ArrayList<UnoCard> hand =p.getHand();
         for (int i = 0; i < cards; i++) {
-            ArrayList<UnoCard> hand = p.getHand();
             hand.add(deckPile.pop());
-            p.setHand(hand);
         }
+        p.setHand(hand);
+
     }
 
 
@@ -174,7 +181,6 @@ public class UnoGame {
                 System.out.println();
             }
         }
-        System.out.println(Arrays.toString(players.toArray()));
     }
 
     public HashMap<String, Integer> playerScores() {
@@ -231,9 +237,20 @@ public class UnoGame {
         }
         return null;
     }
+    public void printHelp() {
+        System.out.println("Key in the name of the card you wish to play!");
+        System.out.println("DRAW - Take a new card to play");
+        System.out.println("POINTS - Score of all players");
+    }
+
+    public void drawCard(Player currentPlayer) {
+        currentPlayer.getHand().add(deckPile.pop());
+    }
 
     public static void main(String[] args) {
-        Type[] colors = Type.values();
-        System.out.println(Arrays.toString(colors));
+        UnoGame game = new UnoGame();
+        Player p = new HumanPlayer("p");
+        game.completePlayers();
+        game.dealCards();
     }
 }
