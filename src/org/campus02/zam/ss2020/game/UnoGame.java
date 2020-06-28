@@ -63,11 +63,7 @@ public class UnoGame {
             return validateWild(playedCard);
         }
         if (playedCard.toString().contains("WILD")) {
-            if (player.getHand().contains(openCard.value) || player.getHand().contains(openCard.type)) {
-                penalty(player, 1);
-                System.out.println("You can't play that card. Penalty!");
-                return false;
-            } else return true;
+            return isWildAllowed(openCard, player);
         } else if (playedCard.value == openCard.value || playedCard.type == openCard.type || playedCard.toString().contains("WILD")) {
             return true;
         } else {
@@ -77,6 +73,25 @@ public class UnoGame {
         }
     }
 
+    /**
+     * checks if the current player is allowed to play a wild card
+     * @param openCard
+     * @param player
+     * @return
+     */
+    private boolean isWildAllowed(UnoCard openCard, Player player) {
+        if (player.getHand().contains(openCard.value) || player.getHand().contains(openCard.type)) {
+            penalty(player, 1);
+            System.out.println("You can't play that card. Penalty!");
+            return false;
+        } else return true;
+    }
+
+    /**
+     * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
+     * @param playedCard
+     * @return
+     */
     private boolean validateWild(UnoCard playedCard) {
         if (discardPile.size()==1){
             return true;
@@ -89,11 +104,11 @@ public class UnoGame {
     }
 
     public boolean pickUpCards(Player player, UnoCard openCard) {
-        if (openCard.toString().contains("DRAWTWO") || !player.saysUNO()) {
+        if (openCard.toString().contains("DRAW_TWO") || !player.saysUNO()) {
             penalty(player, 2);
             return true;
 
-        } else if (openCard.toString().contains("WILDFOUR")) {
+        } else if (openCard.toString().contains("WILD_FOUR")) {
             penalty(player, 4);
             return true;
         }
@@ -165,16 +180,26 @@ public class UnoGame {
         return combinedHand;
     }
 
-
-    public void setSaidUNO(Player player) {
+    /**
+     * This method checks if the player is allowed to say Uno at this point.  No penatlty for incorrect call
+     * @param player
+     * @return
+     */
+    public boolean checkUno(Player player) {
         for (Player p : players) {
             if (p.equals(player)) {
                 if (p.getHand().size() == 2) {
-                    p.saysUNO();
+                    p.setSaidUNO(true);
                     System.out.println(p.getName() + " said UNO");
+                    return true;
+                }
+                else {
+                    System.out.println("You can say Uno only when you have 2 cards left!");
+                    return false;
                 }
             }
         }
+        return false;
     }
 
     public UnoCard robotPlays (Player robot, UnoCard currentCard) {
