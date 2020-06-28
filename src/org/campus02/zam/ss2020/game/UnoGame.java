@@ -9,20 +9,26 @@ import org.campus02.zam.ss2020.players.Robot;
 
 import java.util.*;
 
+/**
+ * Data Structures used:
+ * deckpile : Stack - no search operations performed and we need to always open only the top card.
+ * discardpile : Stack - no search operations performed and we need to always open only the top card.
+ */
 public class UnoGame {
     LinkedList<Player> players;// linkedlist
-    Deck deck;
-    LinkedList<UnoCard> discardPile;
+    Stack<UnoCard> discardPile;
     Stack<UnoCard> deckPile;
     String wildColor;
+    private boolean cardsPickedUp;
 
     public UnoGame() {
         this.players = new LinkedList<>();
-        this.discardPile = new LinkedList<>();
+        this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
+        this.cardsPickedUp=true;
     }
 
-    public LinkedList<UnoCard> getDiscardPile() {
+    public Stack<UnoCard> getDiscardPile() {
         return discardPile;
     }
 
@@ -33,24 +39,25 @@ public class UnoGame {
             players.add(p);
         }
     }
-    public void processCard(Player currentPlayer, UnoCard playedCard, UnoCard openCard){
-        if (currentPlayer.getName().contains("Robot")){
-
-        }
-        else {
-            if(isAllowed(playedCard, openCard, currentPlayer)){
-                if (playedCard.equals("WILD")||playedCard.equals("WILD_FOUR")){
-                    allowWild();
-                }
+    public boolean processCard(Player currentPlayer, UnoCard playedCard, UnoCard openCard){
+        if(isAllowed(playedCard, openCard, currentPlayer)){
+            if (playedCard.equals("WILD")||playedCard.equals("WILD_FOUR")){
+                allowWild();
             }
+            discardPile.push(playedCard);
+            currentPlayer.getHand().remove(playedCard);
+            setCardsPickedUp(false);
+            return true;
         }
+        return false;
     }
 
     private void allowWild() {
         System.out.print("What color would you like to change to? : ");
         Scanner scanner = new Scanner(System.in);
-        if (Type.values().toString().contains(scanner.next())) {
-            wildColor = scanner.next();
+        String color = scanner.next();
+        if (Arrays.toString(Type.values()).contains(color)) {//checking if the color entered by the user is valid
+            wildColor = color;
         }
         else {
             System.out.println("Invalid Entry!");
@@ -63,6 +70,7 @@ public class UnoGame {
             return validateWild(playedCard);
         }
         if (playedCard.toString().contains("WILD")) {
+            allowWild();
             return isWildAllowed(openCard, player);
         } else if (playedCard.value == openCard.value || playedCard.type == openCard.type || playedCard.toString().contains("WILD")) {
             return true;
@@ -87,6 +95,14 @@ public class UnoGame {
         } else return true;
     }
 
+    public boolean isCardsPickedUp() {
+        return cardsPickedUp;
+    }
+
+    public void setCardsPickedUp(boolean cardsPickedUp) {
+        this.cardsPickedUp = cardsPickedUp;
+    }
+
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
      * @param playedCard
@@ -103,16 +119,14 @@ public class UnoGame {
         }
     }
 
-    public boolean pickUpCards(Player player, UnoCard openCard) {
-        if (openCard.toString().contains("DRAW_TWO") || !player.saysUNO()) {
+    public void pickUpCards(Player player, UnoCard openCard) {
+        if (openCard.toString().contains("DRAWTWO") || !player.saysUNO()) {
             penalty(player, 2);
-            return true;
-
-        } else if (openCard.toString().contains("WILD_FOUR")) {
+        } else if (openCard.toString().contains("WILDFOUR")) {
             penalty(player, 4);
-            return true;
         }
-        return false;
+        cardsPickedUp=true;
+        System.out.println(player +" picked up cards and misses a turn!");
     }
 
     /*public boolean playerMissesTurn (Player player, UnoCard openCard){
@@ -219,45 +233,7 @@ public class UnoGame {
     }
 
     public static void main(String[] args) {
-        Player jay = new HumanPlayer("Jayanthi");
-        Deck d = new Deck();
-        d.shuffle();
-        jay.setHand(d.dealCards());
-        System.out.println(jay.getHand());
-        jay.setPoints(jay.getHand());
-        System.out.println(jay.getPoints());
-
-        Player Emina = new HumanPlayer("Emina");
-        Emina.setHand(d.dealCards());
-        System.out.println(Emina.getHand());
-        Emina.setPoints(Emina.getHand());
-        System.out.println(Emina.getPoints());
-
-        Player iro = new HumanPlayer("Iro");
-        iro.setHand(d.dealCards());
-        System.out.println(iro.getHand());
-        iro.setPoints(iro.getHand());
-        System.out.println(iro.getPoints());
-
-        Player elisabeth = new HumanPlayer("Elisabeth");
-        elisabeth.setHand(d.dealCards());
-        System.out.println(elisabeth.getHand());
-        elisabeth.setPoints(elisabeth.getHand());
-        System.out.println(elisabeth.getPoints());
-
-        UnoGame pm = new UnoGame();
-        pm.addPlayer(jay);
-        pm.addPlayer(Emina);
-        pm.addPlayer(iro);
-        pm.addPlayer(elisabeth);
-
-        System.out.println(d.deck.size());
-
-        System.out.println(pm.playerScores());
-
+        Type[] colors = Type.values();
+        System.out.println(Arrays.toString(colors));
     }
-
-
-
-
 }
