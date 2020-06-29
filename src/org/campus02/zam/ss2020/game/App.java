@@ -15,7 +15,7 @@ public class App {
     private final PrintStream output;
     private boolean roundEnded;
     private String userInput;
-    private Player currentPlayer;
+
 
     public App(Scanner input, PrintStream output){
         this.input = input;
@@ -30,10 +30,12 @@ public class App {
                 initializeRound();
                 while (!roundEnded) {
                     for (Player p : game.players) {
-                        currentPlayer = p;
+                        game.setCurrentPlayer(p);
                         if (game.isCardsToBePickedUp()) {
-                            game.pickUpCards(p);
-                        } else if (p.getName().contains("Robot")) {
+                            game.pickUpCards();
+                            continue;
+                        }
+                        if (p.getName().contains("Robot")) {
                                 game.robotPlays(p, game.discardPile.peek());// need to write this method properly.  Currently, there is no logic.
                         } else {
                             printState();
@@ -55,23 +57,7 @@ public class App {
 
     private void initializeGame() {
     //receive player names DONE and create robots, if required (I dont know how)
-
-        for (int i = 0; i< 4 ; i++) {
-            System.out.print("Player Name: ");
-            String Player = input.next();
-            if (Player.equals("stop")){
-                System.out.println("Bots will be added to complete the players!");
-                break;
-            }
-            Player p = new HumanPlayer(Player);
-            game.addPlayer(p);
-        }
-        game.completePlayers();
-        Collections.shuffle(game.players);
-        System.out.println("This is the order in which players will play :");
-        System.out.println(game.players);
-
-
+        game.createPlayers();
         //Create order of players --- needs to be shuffled
         //Create a Deck (its on Class UnoGame)
         //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame)
@@ -89,23 +75,21 @@ public class App {
     }
 
     private void readUserInput() {
-        System.out.println("Your cards are : " + currentPlayer.getHand());
-        System.out.print("What card would you like to play? :");
         userInput = input.next();
     }
 
     private void updateState() {
         if(userInput.contains("UNO")){
-            if(!game.checkUno(currentPlayer)){
+            if(!game.checkUno()){
                 readUserInput();
             }
         }else if (userInput.equals("DRAW")){
-            game.drawCard(currentPlayer);
+            game.drawCard();
             readUserInput();
             updateState();
         }else {
             UnoCard currentCard = null;
-            for (UnoCard c : currentPlayer.getHand()) {
+            for (UnoCard c : game.getCurrentPlayer().getHand()) {
                 if (c.toString().equals(userInput)) {
                     currentCard = c;
                 }
@@ -114,7 +98,7 @@ public class App {
                 System.out.println("Invalid entry");
                 readUserInput();
             }
-            game.processCard(currentPlayer, currentCard, game.discardPile.peek());
+            game.processCard(currentCard, game.discardPile.peek());
         }
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
@@ -124,8 +108,10 @@ public class App {
 
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
+        System.out.println("Player " + game.getCurrentPlayer().getName() + " plays!");
+        System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
         System.out.println("The Open Card is : " + game.discardPile.peek());
-        System.out.println("Player " + currentPlayer.getName() + " plays!");
+        System.out.print("What card would you like to play? :");
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 
