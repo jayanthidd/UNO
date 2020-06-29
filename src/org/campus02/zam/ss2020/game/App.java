@@ -56,11 +56,10 @@ public class App {
     }
 
     private void initializeGame() {
-    //receive player names DONE and create robots, if required (I dont know how)
         game.createPlayers();
         //Create order of players --- needs to be shuffled
         //Create a Deck (its on Class UnoGame)
-        //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame)
+        //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame) - we are doing this part in Initialise round!
     }
 
     private void initializeRound() {
@@ -68,10 +67,6 @@ public class App {
         game.dealCards();
         System.out.println();
         game.discardPile.add(game.deckPile.pop());
-
-    //shuffle cards
-    // Deal cards among players
-    //create discard pile and open the first card
     }
 
     private void readUserInput() {
@@ -79,6 +74,10 @@ public class App {
     }
 
     private void updateState() {
+        if (game.validCard(userInput)){
+            game.processCard();
+            return;
+        }
         if(userInput.contains("UNO")){
             if(!game.checkUno()){
                 readUserInput();
@@ -87,18 +86,12 @@ public class App {
             game.drawCard();
             readUserInput();
             updateState();
-        }else {
-            UnoCard currentCard = null;
-            for (UnoCard c : game.getCurrentPlayer().getHand()) {
-                if (c.toString().equals(userInput)) {
-                    currentCard = c;
-                }
-            }
-            if (currentCard == null) {
-                System.out.println("Invalid entry");
-                readUserInput();
-            }
-            game.processCard(currentCard, game.discardPile.peek());
+        }else if (userInput.equals("SKIP")){
+            return;
+        } else {
+            System.out.println("Invalid entry");
+            readUserInput();
+            updateState();
         }
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)

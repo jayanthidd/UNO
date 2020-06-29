@@ -21,13 +21,21 @@ public class UnoGame {
     String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
-    private String playedCard;
+    private UnoCard playedCard;
 
     public UnoGame() {
         this.players = new LinkedList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
         this.cardsToBePickedUp=false;
+    }
+
+    public UnoCard getPlayedCard() {
+        return playedCard;
+    }
+
+    public void setPlayedCard(UnoCard playedCard) {
+        this.playedCard = playedCard;
     }
 
     public boolean isCardsToBePickedUp() {
@@ -57,8 +65,8 @@ public class UnoGame {
             players.add(p);
         }
     }
-    public void processCard(UnoCard playedCard, UnoCard openCard){
-        if(isAllowed(playedCard, openCard)){
+    public void processCard(){
+        if(isAllowed(playedCard)){
             updatePlayedCard(playedCard);
             if (playedCard.toString().contains("WILD")){
                 allowWild();
@@ -90,13 +98,13 @@ public class UnoGame {
         }
     }
 
-    public boolean isAllowed(UnoCard playedCard, UnoCard openCard) {
-        if (openCard.toString().contains("WILD")){
+    public boolean isAllowed(UnoCard playedCard) {
+        if (discardPile.peek().toString().contains("WILD")){
             return validateWild(playedCard);
         }
         if (playedCard.toString().contains("WILD")) {
-            return isWildAllowed(openCard);
-        } else if (playedCard.value == openCard.value || playedCard.type == openCard.type) {
+            return isWildAllowed();
+        } else if (playedCard.value == discardPile.peek().value || playedCard.type == discardPile.peek().type) {
             return true;
         } else
             return false;
@@ -105,11 +113,10 @@ public class UnoGame {
 
     /**
      * checks if the current player is allowed to play a wild card
-     * @param openCard
      * @return
      */
-    private boolean isWildAllowed(UnoCard openCard) {
-        if (currentPlayer.getHand().contains(openCard.value) || currentPlayer.getHand().contains(openCard.type)) {
+    private boolean isWildAllowed() {
+        if (currentPlayer.getHand().contains(discardPile.peek().value) || currentPlayer.getHand().contains(discardPile.peek().type)) {
             penalty(1);
             System.out.println("You can't play that card. Penalty!");
             return false;
@@ -277,5 +284,15 @@ public class UnoGame {
         Player p = new HumanPlayer("p");
         game.completePlayers();
         game.dealCards();
+    }
+
+    public boolean validCard(String userInput) {
+        for (UnoCard c : currentPlayer.getHand()) {
+            if (c.toString().equals(userInput)) {
+                playedCard = c;
+                return true;
+            }
+        }
+        return false;
     }
 }
