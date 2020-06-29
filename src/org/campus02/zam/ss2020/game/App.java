@@ -70,6 +70,8 @@ public class App {
     }
 
     private void readUserInput() {
+        System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
+        System.out.print("What card would you like to play? :");
         userInput = input.next();
     }
 
@@ -102,9 +104,7 @@ public class App {
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("Player " + game.getCurrentPlayer().getName() + " plays!");
-        System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
         System.out.println("The Open Card is : " + game.discardPile.peek());
-        System.out.print("What card would you like to play? :");
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 

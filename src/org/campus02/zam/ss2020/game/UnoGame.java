@@ -13,6 +13,7 @@ import java.util.*;
  * Data Structures used:
  * deckpile : Stack - no search operations performed and we need to always open only the top card.
  * discardpile : Stack - no search operations performed and we need to always open only the top card.
+ * players : LinkedList - no search operations performed but need to be able to easily skip and reverse the order
  */
 public class UnoGame {
     LinkedList<Player> players;// linkedlist
@@ -70,6 +71,9 @@ public class UnoGame {
             updatePlayedCard(playedCard);
             if (playedCard.toString().contains("WILD")){
                 allowWild();
+            }
+            if (playedCard.toString().contains("REVERSE")){
+                reverse();
             }
         } else {
             System.out.println("You cannot play that card! Penalty!");
@@ -160,6 +164,9 @@ public class UnoGame {
         }return false;
     }
      */
+    public void reverse() {
+        Collections.reverse(players);// the player seems to get another turn...
+    }
 
     public void dealCards() {
         for (Player p : players) {
