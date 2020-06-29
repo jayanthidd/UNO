@@ -16,47 +16,21 @@ import java.util.*;
  * players : LinkedList - no search operations performed but need to be able to easily skip and reverse the order
  */
 public class UnoGame {
-    LinkedList<Player> players;// linkedlist
-    Stack<UnoCard> discardPile;
-    Stack<UnoCard> deckPile;
-    String wildColor;
+    private LinkedList<Player> players;// linkedlist
+    private Stack<UnoCard> discardPile;
+    private Stack<UnoCard> deckPile;
+    private String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
+    public Calls[] calls;
 
     public UnoGame() {
         this.players = new LinkedList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
         this.cardsToBePickedUp=false;
-    }
-
-    public UnoCard getPlayedCard() {
-        return playedCard;
-    }
-
-    public void setPlayedCard(UnoCard playedCard) {
-        this.playedCard = playedCard;
-    }
-
-    public boolean isCardsToBePickedUp() {
-        return cardsToBePickedUp;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void setCardsToBePickedUp(boolean cardsToBePickedUp) {
-        this.cardsToBePickedUp = cardsToBePickedUp;
-    }
-
-    public Stack<UnoCard> getDiscardPile() {
-        return discardPile;
+        this.calls = Calls.values();
     }
 
     public void addPlayer(Player p) {
@@ -112,7 +86,6 @@ public class UnoGame {
             return true;
         } else
             return false;
-
     }
 
     /**
@@ -126,7 +99,6 @@ public class UnoGame {
             return false;
         } else return true;
     }
-
 
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
@@ -185,9 +157,7 @@ public class UnoGame {
             hand.add(deckPile.pop());
         }
         currentPlayer.setHand(hand);
-
     }
-
 
     public void completePlayers() {
 
@@ -293,7 +263,7 @@ public class UnoGame {
         game.dealCards();
     }
 
-    public boolean validCard(String userInput) {
+    public boolean isCard(String userInput) {
         for (UnoCard c : currentPlayer.getHand()) {
             if (c.toString().equals(userInput)) {
                 playedCard = c;
@@ -301,5 +271,29 @@ public class UnoGame {
             }
         }
         return false;
+    }
+
+    public boolean isCardsToBePickedUp() {
+        return cardsToBePickedUp;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Stack<UnoCard> getDiscardPile() {
+        return discardPile;
+    }
+
+    public LinkedList<Player> getPlayers() {
+        return players;
+    }
+
+    public Stack<UnoCard> getDeckPile() {
+        return deckPile;
     }
 }

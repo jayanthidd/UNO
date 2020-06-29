@@ -9,9 +9,6 @@ public enum Type {
 
     private  static final Type[] types = Type.values();
 
-    public static Type getTypes(int i) {
-        return Type.types[i];
-    }
 }
 
 

@@ -1,8 +1,4 @@
 package org.campus02.zam.ss2020.game;
-
-import org.campus02.zam.ss2020.cards.Type;
-import org.campus02.zam.ss2020.cards.UnoCard;
-import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
 import java.io.PrintStream;
@@ -29,14 +25,14 @@ public class App {
             do {
                 initializeRound();
                 while (!roundEnded) {
-                    for (Player p : game.players) {
+                    for (Player p : game.getPlayers()) {
                         game.setCurrentPlayer(p);
                         if (game.isCardsToBePickedUp()) {
                             game.pickUpCards();
                             continue;
                         }
                         if (p.getName().contains("Robot")) {
-                                game.robotPlays(p, game.discardPile.peek());// need to write this method properly.  Currently, there is no logic.
+                                game.robotPlays(p, game.getDiscardPile().peek());// need to write this method properly.  Currently, there is no logic.
                         } else {
                             printState();
                             readUserInput();
@@ -63,10 +59,10 @@ public class App {
     }
 
     private void initializeRound() {
-        Collections.shuffle(game.deckPile);
+        Collections.shuffle(game.getDeckPile());
         game.dealCards();
         System.out.println();
-        game.discardPile.add(game.deckPile.pop());
+        game.getDiscardPile().add(game.getDeckPile().pop());
     }
 
     private void readUserInput() {
@@ -76,7 +72,7 @@ public class App {
     }
 
     private void updateState() {
-        if (game.validCard(userInput)){
+        if (game.isCard(userInput)){
             game.processCard();
             return;
         }
@@ -98,18 +94,16 @@ public class App {
         // Read the user input (what will he play?)
         // Validate the User input (can he play it?)
         // Update the state and show the current print state
-
     }
 
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("Player " + game.getCurrentPlayer().getName() + " plays!");
-        System.out.println("The Open Card is : " + game.discardPile.peek());
+        System.out.println("The Open Card is : " + game.getDiscardPile().peek());
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 
     }
-
     private boolean roundEnded(){
         return false;
     }

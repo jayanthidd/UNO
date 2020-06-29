@@ -22,8 +22,4 @@ public enum Value {
     }
 
     public static final Value[] values = Value.values();
-
-    public static Value getValues(int i) {
-        return Value.values[i];
-    }
 }

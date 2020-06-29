@@ -11,7 +11,7 @@ public class UnoCard {
 
         this.type = type;
         this.value = value;
-        card = type.name() +"_" + value.name();
+        card = type.name() + value.name();
         cardPoints = value.points; // need to check if this works
     }
 
