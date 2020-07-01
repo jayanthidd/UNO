@@ -113,6 +113,6 @@ public class App {
     }
 
     private void printFinalScore(){
-        System.out.println(game.printPlayerScores());
+        game.printPlayerScores();
     }
 }
