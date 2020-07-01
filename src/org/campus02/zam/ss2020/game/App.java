@@ -39,7 +39,7 @@ public class App {
                             updateState();
                         }
                         if (p.getHand().isEmpty()) {
-                            roundEnded = true;
+                            roundEnded = true; // java.util.EmptyStackException
                         }
                     }
                 }
@@ -77,7 +77,7 @@ public class App {
             return;
         }
         if(userInput.contains("UNO")){
-            if(!game.checkUno()){
+            if(game.checkUno()){
                 readUserInput();
             }
         }else if (userInput.equals("DRAW")){
@@ -113,6 +113,6 @@ public class App {
     }
 
     private void printFinalScore(){
-        System.out.println(game.playerScores());
+        System.out.println(game.printPlayerScores());
     }
 }

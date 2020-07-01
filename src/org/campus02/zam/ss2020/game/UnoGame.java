@@ -41,8 +41,8 @@ public class UnoGame {
         }
     }
     public void processCard(){
-        if(isAllowed(playedCard)){
-            updatePlayedCard(playedCard);
+        if(isAllowed()){
+            updatePlayedCard();
             if (playedCard.toString().contains("WILD")){
                 allowWild();
             }
@@ -58,9 +58,20 @@ public class UnoGame {
         }
     }
 
-    private void updatePlayedCard(UnoCard playedCard) {
+    private void updatePlayedCard() {
         discardPile.push(playedCard);
-        currentPlayer.getHand().remove(playedCard);
+        if (currentPlayer.getHand().size()!=1){
+            currentPlayer.getHand().remove(playedCard);
+        } else {
+            completeRound();
+        }
+    }
+
+    private void completeRound() {
+        currentPlayer.setPoints(combineHandsFromAllPlayers());
+        System.out.println("This round is over!");
+        System.out.println("Congratulations " + currentPlayer.getName());
+        printPlayerScores();
     }
 
     private void allowWild() {
@@ -76,9 +87,9 @@ public class UnoGame {
         }
     }
 
-    public boolean isAllowed(UnoCard playedCard) {
+    public boolean isAllowed() {
         if (discardPile.peek().toString().contains("WILD")){
-            return validateWild(playedCard);
+            return validateWild();
         }
         if (playedCard.toString().contains("WILD")) {
             return isWildAllowed();
@@ -102,10 +113,9 @@ public class UnoGame {
 
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
-     * @param playedCard
      * @return
      */
-    private boolean validateWild(UnoCard playedCard) {
+    private boolean validateWild() {
         if (discardPile.size()==1){
             return true;
         }
@@ -175,12 +185,11 @@ public class UnoGame {
         }
     }
 
-    public HashMap<String, Integer> playerScores() {
-        HashMap<String, Integer> scores = new HashMap<>();
+    public void printPlayerScores() {
+        System.out.println("Scores are ");
         for (Player p : players) {
-            scores.put(p.getName(), p.getPoints());
+            System.out.println(p.getName() + " : " + p.getPoints());
         }
-        return scores;
     }
 
     public ArrayList<UnoCard> combineHandsFromAllPlayers() {
@@ -188,7 +197,6 @@ public class UnoGame {
         for (Player p : players) {
             combinedHand.addAll(p.getHand());
         }
-
         return combinedHand;
     }
 
