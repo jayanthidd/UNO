@@ -38,8 +38,8 @@ public class App {
                             readUserInput();
                             updateState();
                         }
-                        if (p.getHand().isEmpty()) {
-                            roundEnded = true; // java.util.EmptyStackException
+                        if (p.getHand().size()==1) {
+                            roundEnded = true; // round is still going!
                         }
                     }
                 }

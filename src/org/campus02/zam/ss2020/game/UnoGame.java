@@ -241,7 +241,10 @@ public class UnoGame {
     }
 
     public void drawCard() {
-        currentPlayer.getHand().add(deckPile.pop());
+        UnoCard newCard = deckPile.pop();
+        //if ()
+        currentPlayer.getHand().add(newCard);
+
     }
 
     public void createPlayers() {
