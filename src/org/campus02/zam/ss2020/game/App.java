@@ -73,7 +73,7 @@ public class App {
     private void readUserInput() {
         System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
         System.out.print("What card would you like to play? :");
-        userInput = input.next();
+        userInput = input.next().toUpperCase();
         System.out.println("-------------------------------------------------------------------");
     }
 
@@ -82,14 +82,14 @@ public class App {
             game.processCard();
             return;
         }
-        if(userInput.contains("UNO")){
+        if(userInput.toUpperCase().contains("UNO")){
             if(game.checkUno()){
                 readUserInput();
                 updateState();
             }
-        }else if (userInput.equals("DRAW")){
+        }else if (userInput.toUpperCase().equals("DRAW")){
             game.drawCard();
-        }else if (userInput.equals("SKIP")){
+        }else if (userInput.toUpperCase().equals("SKIP")){
             return;
         } else {
             System.out.println("Invalid entry");
@@ -103,7 +103,7 @@ public class App {
 
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
-        System.out.println("Player " + game.getCurrentPlayer().getName() + " plays!");
+        System.out.println("Player " + game.getCurrentPlayer().getName().toUpperCase() + " plays!");
         if(game.getDiscardPile().peek().toString().contains("WILD")){
             System.out.println("The Open Card is : " + game.getDiscardPile().peek() + "   Color : " + game.getWildColor());
         } else {
