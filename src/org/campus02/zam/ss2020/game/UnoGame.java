@@ -19,7 +19,7 @@ public class UnoGame {
     private ArrayList<Player> players;// linkedlist
     private Stack<UnoCard> discardPile;
     private Stack<UnoCard> deckPile;
-    private String wildColor;
+    public String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
@@ -265,7 +265,16 @@ public class UnoGame {
     }
 
     public void drawCard() {
-        currentPlayer.getHand().add(deckPile.pop());
+        playedCard = deckPile.pop();
+        currentPlayer.getHand().add(playedCard);
+        if (isAllowed()){
+            updatePlayedCard();
+            System.out.println("Your new card " + playedCard + " has been played");
+        } else {
+            System.out.println("You cannot play the new card!");
+            System.out.println("Your new cards are : " + currentPlayer.getHand());
+        }
+        return;
     }
 
     public void createPlayers() {
@@ -325,5 +334,9 @@ public class UnoGame {
 
     public Stack<UnoCard> getDeckPile() {
         return deckPile;
+    }
+
+    public String getWildColor() {
+        return wildColor;
     }
 }
