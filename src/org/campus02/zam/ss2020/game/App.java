@@ -85,6 +85,7 @@ public class App {
         if(userInput.contains("UNO")){
             if(game.checkUno()){
                 readUserInput();
+                updateState();
             }
         }else if (userInput.equals("DRAW")){
             game.drawCard();
