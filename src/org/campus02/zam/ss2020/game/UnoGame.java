@@ -7,6 +7,7 @@ import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 import org.campus02.zam.ss2020.players.Robot;
 
+import javax.print.DocFlavor;
 import java.security.PrivilegedAction;
 import java.util.*;
 
@@ -44,15 +45,6 @@ public class UnoGame {
     public void processCard(){
         if(isAllowed()){
             updatePlayedCard();
-            if (playedCard.toString().contains("WILD")){
-                allowWild();
-            }
-            if (playedCard.toString().contains("REVERSE")){
-                reverse();
-            }
-            if(playedCard.toString().contains("SKIP")) {
-                skip = true;
-            }
         } else {
             System.out.println("You cannot play that card! Penalty!");
             penalty(1);
@@ -69,13 +61,20 @@ public class UnoGame {
         } else {
             completeRound();
         }
+        if (playedCard.toString().contains("WILD")){
+            allowWild();
+        } else if (playedCard.toString().contains("REVERSE")){
+            reverse();
+        } else if(playedCard.toString().contains("SKIP")) {
+            skip = true;
+        }
     }
 
     private void completeRound() {
+        App.roundEnded = true;
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println("This round is over!");
         System.out.println("Congratulations " + currentPlayer.getName());
-        printPlayerScores();
     }
 
     private void allowWild() {
@@ -135,9 +134,6 @@ public class UnoGame {
         } else if (discardPile.peek().toString().contains("WILDFOUR")) {
             penalty( 4);
         }
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
-        System.out.println(currentPlayer.getName()+"'s cards are : " + currentPlayer.getHand());
         cardsToBePickedUp=false;
     }
 
@@ -155,7 +151,6 @@ public class UnoGame {
     }
 
     public void reverse() {
-        Collections.reverse(players);// the player seems to get another turn...
     }
 
     public void dealCards() {
@@ -175,6 +170,7 @@ public class UnoGame {
             hand.add(deckPile.pop());
         }
         currentPlayer.setHand(hand);
+        System.out.println("-------------------------------------------------------------------");
         System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
         System.out.println(currentPlayer.getName()+"'s cards are : " + currentPlayer.getHand());
     }
@@ -254,9 +250,16 @@ public class UnoGame {
 
     public void drawCard() {
         UnoCard newCard = deckPile.pop();
-        //if ()
+        playedCard = newCard;
         currentPlayer.getHand().add(newCard);
-
+        if (isAllowed()){
+            updatePlayedCard();
+            System.out.println("Your new card " + newCard + "has been played!");//what if it is a wild card.  I dont know if that will work...
+        } else {
+            System.out.println("Your new card cannot be played");
+            System.out.println("Your cards are : " + currentPlayer.getHand());
+        }
+        return;
     }
 
     public void createPlayers() {
@@ -316,5 +319,9 @@ public class UnoGame {
 
     public Stack<UnoCard> getDeckPile() {
         return deckPile;
+    }
+
+    public String getWildColor() {
+        return wildColor;
     }
 }

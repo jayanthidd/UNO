@@ -2,6 +2,7 @@ package org.campus02.zam.ss2020.game;
 import org.campus02.zam.ss2020.players.Player;
 
 import java.io.PrintStream;
+import java.sql.SQLOutput;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ public class App {
     UnoGame game = new UnoGame();
     private final Scanner input;
     private final PrintStream output;
-    private boolean roundEnded;
+    public static boolean roundEnded;
     private String userInput;
 
 
@@ -73,6 +74,7 @@ public class App {
         System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
         System.out.print("What card would you like to play? :");
         userInput = input.next();
+        System.out.println("-------------------------------------------------------------------");
     }
 
     private void updateState() {
@@ -86,8 +88,6 @@ public class App {
             }
         }else if (userInput.equals("DRAW")){
             game.drawCard();
-            readUserInput();
-            updateState();
         }else if (userInput.equals("SKIP")){
             return;
         } else {
@@ -103,7 +103,11 @@ public class App {
     private void printState() {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("Player " + game.getCurrentPlayer().getName() + " plays!");
-        System.out.println("The Open Card is : " + game.getDiscardPile().peek());
+        if(game.getDiscardPile().peek().toString().contains("WILD")){
+            System.out.println("The Open Card is : " + game.getDiscardPile().peek() + "   Color : " + game.getWildColor());
+        } else {
+            System.out.println("The Open Card is : " + game.getDiscardPile().peek());
+        }
         // Print(show) the Top Card of the discard pile
         // Print(show) the current hand of the player
 
