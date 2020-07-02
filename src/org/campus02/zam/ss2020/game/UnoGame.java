@@ -23,12 +23,14 @@ public class UnoGame {
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
+    private boolean skip;
 
     public UnoGame() {
         this.players = new ArrayList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
         this.cardsToBePickedUp = false;
+        this.skip = false;
     }
 
     public void addPlayer(Player p) {
@@ -226,6 +228,19 @@ public class UnoGame {
             }
         }
         return false;
+    }
+
+    public void skip(){
+        skip = false;
+        System.out.println(currentPlayer.getName() + " misses a turn");
+    }
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 
     public UnoCard robotPlays(Player robot, UnoCard currentCard) {
