@@ -7,6 +7,7 @@ import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 import org.campus02.zam.ss2020.players.Robot;
 
+import java.security.PrivilegedAction;
 import java.util.*;
 
 /**
@@ -23,12 +24,14 @@ public class UnoGame {
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
+    private boolean skip;
 
     public UnoGame() {
         this.players = new LinkedList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
         this.cardsToBePickedUp=false;
+        this.skip = false;
     }
 
     public void addPlayer(Player p) {
@@ -46,6 +49,9 @@ public class UnoGame {
             }
             if (playedCard.toString().contains("REVERSE")){
                 reverse();
+            }
+            if(playedCard.toString().contains("SKIP")) {
+                skip = true;
             }
         } else {
             System.out.println("You cannot play that card! Penalty!");
@@ -78,8 +84,7 @@ public class UnoGame {
         String color = scanner.next();
         if (Arrays.toString(Type.values()).contains(color)) {//checking if the color entered by the user is valid
             wildColor = color;
-        }
-        else {
+        } else {
             System.out.println("Invalid Entry!");
             allowWild();
         }
@@ -136,14 +141,19 @@ public class UnoGame {
         cardsToBePickedUp=false;
     }
 
-    /*public boolean playerMissesTurn (Player player, UnoCard openCard){
-        if (hasToPickUpCards(player, openCard)) {
-            player
-        }else if (openCard.toString().contains("SKIP")) {
-            player
-        }return false;
+    public void skip(){
+        skip = false;
+        System.out.println(currentPlayer.getName() + " misses a turn");
     }
-     */
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
     public void reverse() {
         Collections.reverse(players);// the player seems to get another turn...
     }
@@ -165,6 +175,8 @@ public class UnoGame {
             hand.add(deckPile.pop());
         }
         currentPlayer.setHand(hand);
+        System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
+        System.out.println(currentPlayer.getName()+"'s cards are : " + currentPlayer.getHand());
     }
 
     public void completePlayers() {
