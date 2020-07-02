@@ -23,14 +23,12 @@ public class UnoGame {
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
-    public Calls[] calls;
 
     public UnoGame() {
         this.players = new LinkedList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
         this.cardsToBePickedUp=false;
-        this.calls = Calls.values();
     }
 
     public void addPlayer(Player p) {
