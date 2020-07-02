@@ -68,8 +68,6 @@ public class UnoGame {
         }
     }
 
-    //I make a change on my Branch Iro, just to see if this works
-
     private void completeRound() {
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println("This round is over!");
