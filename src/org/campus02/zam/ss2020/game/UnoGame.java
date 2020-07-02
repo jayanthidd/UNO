@@ -276,6 +276,9 @@ public class UnoGame {
         if (isAllowed()){
             updatePlayedCard();
             System.out.println("Your new card " + playedCard + " has been played");
+            if (playedCard.toString().contains("WILD")){
+                allowWild();
+            }
         } else {
             System.out.println("You cannot play the new card!");
             System.out.println("Your new cards are : " + currentPlayer.getHand());
