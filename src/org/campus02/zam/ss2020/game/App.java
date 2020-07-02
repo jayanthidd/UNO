@@ -31,6 +31,10 @@ public class App {
                             game.pickUpCards();
                             continue;
                         }
+                        if (game.isSkip()){
+                            game.skip();
+                            continue;
+                        }
                         if (p.getName().contains("Robot")) {
                                 game.robotPlays(p, game.getDiscardPile().peek());// need to write this method properly.  Currently, there is no logic.
                         } else {
@@ -38,8 +42,8 @@ public class App {
                             readUserInput();
                             updateState();
                         }
-                        if (p.getHand().isEmpty()) {
-                            roundEnded = true; // java.util.EmptyStackException
+                        if (p.getHand().size()==1) {
+                            roundEnded = true; // round is still going!
                         }
                     }
                 }
