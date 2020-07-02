@@ -7,8 +7,6 @@ import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 import org.campus02.zam.ss2020.players.Robot;
 
-import javax.print.DocFlavor;
-import java.security.PrivilegedAction;
 import java.util.*;
 
 /**
@@ -18,21 +16,19 @@ import java.util.*;
  * players : LinkedList - no search operations performed but need to be able to easily skip and reverse the order
  */
 public class UnoGame {
-    private LinkedList<Player> players;// linkedlist
+    private ArrayList<Player> players;// linkedlist
     private Stack<UnoCard> discardPile;
     private Stack<UnoCard> deckPile;
     private String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
-    private boolean skip;
 
     public UnoGame() {
-        this.players = new LinkedList<>();
+        this.players = new ArrayList<>();
         this.discardPile = new Stack<>();
         this.deckPile = new Deck().deck;
-        this.cardsToBePickedUp=false;
-        this.skip = false;
+        this.cardsToBePickedUp = false;
     }
 
     public void addPlayer(Player p) {
@@ -42,39 +38,39 @@ public class UnoGame {
             players.add(p);
         }
     }
-    public void processCard(){
-        if(isAllowed()){
+
+    public void processCard() {
+        if (isAllowed()) {
             updatePlayedCard();
+            if (playedCard.toString().contains("WILD")) {
+                allowWild();
+            }
+            if (playedCard.toString().contains("REVERSE")) {
+                reverse();
+            }
         } else {
             System.out.println("You cannot play that card! Penalty!");
             penalty(1);
         }
-        if (playedCard.toString().equals("WILDFOUR")||playedCard.toString().contains("DRAWTWO")){
+        if (playedCard.toString().equals("WILDFOUR") || playedCard.toString().contains("DRAWTWO")) {
             cardsToBePickedUp = true;
         }
     }
 
     private void updatePlayedCard() {
         discardPile.push(playedCard);
-        if (currentPlayer.getHand().size()!=1){
+        if (currentPlayer.getHand().size() != 1) {
             currentPlayer.getHand().remove(playedCard);
         } else {
             completeRound();
         }
-        if (playedCard.toString().contains("WILD")){
-            allowWild();
-        } else if (playedCard.toString().contains("REVERSE")){
-            reverse();
-        } else if(playedCard.toString().contains("SKIP")) {
-            skip = true;
-        }
     }
 
     private void completeRound() {
-        App.roundEnded = true;
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println("This round is over!");
         System.out.println("Congratulations " + currentPlayer.getName());
+        printPlayerScores();
     }
 
     private void allowWild() {
@@ -90,7 +86,7 @@ public class UnoGame {
     }
 
     public boolean isAllowed() {
-        if (discardPile.peek().toString().contains("WILD")){
+        if (discardPile.peek().toString().contains("WILD")) {
             return validateWild();
         }
         if (playedCard.toString().contains("WILD")) {
@@ -103,6 +99,7 @@ public class UnoGame {
 
     /**
      * checks if the current player is allowed to play a wild card
+     *
      * @return
      */
     private boolean isWildAllowed() {
@@ -115,13 +112,13 @@ public class UnoGame {
 
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
+     *
      * @return
      */
     private boolean validateWild() {
-        if (discardPile.size()==1){
+        if (discardPile.size() == 1) {
             return true;
-        }
-        else if(playedCard.type.toString().equals(wildColor)) {
+        } else if (playedCard.type.toString().equals(wildColor)) {
             return true;
         } else {
             return false;
@@ -130,28 +127,35 @@ public class UnoGame {
 
     public void pickUpCards() {
         if (discardPile.peek().toString().contains("DRAWTWO")) {
-            penalty( 2);
+            penalty(2);
         } else if (discardPile.peek().toString().contains("WILDFOUR")) {
-            penalty( 4);
+            penalty(4);
         }
-        cardsToBePickedUp=false;
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
+        System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
+        cardsToBePickedUp = false;
     }
 
-    public void skip(){
-        skip = false;
-        System.out.println(currentPlayer.getName() + " misses a turn");
-    }
+    /*public boolean playerMissesTurn (Player player, UnoCard openCard){
+        if (hasToPickUpCards(player, openCard)) {
+            player
+        }else if (openCard.toString().contains("SKIP")) {
+            player
+        }return false;
 
-    public boolean isSkip() {
-        return skip;
-    }
-
-    public void setSkip(boolean skip) {
-        this.skip = skip;
-    }
-
+     */
     public void reverse() {
+        int count = players.size() - 1; // 3
+        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
+            Player temp = players.get(count);
+            players.set(count, players.get(i)); // postavlja count na poziciju 0, jer je i = 0;
+            players.set(i, temp);
+            count--;
+        }
+
     }
+
 
     public void dealCards() {
         for (Player p : players) {
@@ -165,14 +169,11 @@ public class UnoGame {
     }
 
     public void penalty(int cards) {
-        ArrayList<UnoCard> hand =currentPlayer.getHand();
+        ArrayList<UnoCard> hand = currentPlayer.getHand();
         for (int i = 0; i < cards; i++) {
             hand.add(deckPile.pop());
         }
         currentPlayer.setHand(hand);
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
-        System.out.println(currentPlayer.getName()+"'s cards are : " + currentPlayer.getHand());
     }
 
     public void completePlayers() {
@@ -183,7 +184,7 @@ public class UnoGame {
         }
         if (size == 4) {
             System.out.println("There are 4 players");
-        } else{
+        } else {
             for (int i = size; i < 4; i++) {
                 players.add(new Robot(String.format("Robot%2d", i)));
                 System.out.println();
@@ -208,6 +209,7 @@ public class UnoGame {
 
     /**
      * This method checks if the player is allowed to say Uno at this point.  No penatlty for incorrect call
+     *
      * @return
      */
     public boolean checkUno() {
@@ -217,8 +219,7 @@ public class UnoGame {
                     p.setSaidUNO(true);
                     System.out.println(p.getName() + " said UNO");
                     return true;
-                }
-                else {
+                } else {
                     System.out.println("You can say Uno only when you have 2 cards left!");
                     return false;
                 }
@@ -227,14 +228,13 @@ public class UnoGame {
         return false;
     }
 
-    public UnoCard robotPlays (Player robot, UnoCard currentCard) {
+    public UnoCard robotPlays(Player robot, UnoCard currentCard) {
         for (UnoCard c : robot.getHand()) {
-            if (c.value.equals(currentCard.value)|| c.type.equals(currentCard.type)){
+            if (c.value.equals(currentCard.value) || c.type.equals(currentCard.type)) {
                 return c;
-            }
-            else {
-                for (UnoCard w : robot.getHand()){
-                    if (w.toString().contains("WILD")){
+            } else {
+                for (UnoCard w : robot.getHand()) {
+                    if (w.toString().contains("WILD")) {
                         return w;
                     }
                 }
@@ -242,6 +242,7 @@ public class UnoGame {
         }
         return null;
     }
+
     public void printHelp() {
         System.out.println("Key in the name of the card you wish to play!");
         System.out.println("DRAW - Take a new card to play");
@@ -249,25 +250,15 @@ public class UnoGame {
     }
 
     public void drawCard() {
-        UnoCard newCard = deckPile.pop();
-        playedCard = newCard;
-        currentPlayer.getHand().add(newCard);
-        if (isAllowed()){
-            updatePlayedCard();
-            System.out.println("Your new card " + newCard + "has been played!");//what if it is a wild card.  I dont know if that will work...
-        } else {
-            System.out.println("Your new card cannot be played");
-            System.out.println("Your cards are : " + currentPlayer.getHand());
-        }
-        return;
+        currentPlayer.getHand().add(deckPile.pop());
     }
 
     public void createPlayers() {
         Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i< 4 ; i++) {
+        for (int i = 0; i < 4; i++) {
             System.out.print("Player Name: ");
             String Player = scanner.next();
-            if (Player.equals("stop")){
+            if (Player.equals("stop")) {
                 System.out.println("Bots will be added to complete the players!");
                 break;
             }
@@ -313,15 +304,11 @@ public class UnoGame {
         return discardPile;
     }
 
-    public LinkedList<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public Stack<UnoCard> getDeckPile() {
         return deckPile;
-    }
-
-    public String getWildColor() {
-        return wildColor;
     }
 }
