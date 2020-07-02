@@ -42,38 +42,32 @@ public class UnoGame {
     }
 
     public void processCard() {
-        if (isAllowed()) { // check if the played card is ok to be played with respect to the open card as well as the set of cards in the player's hand
-            updatePlayedCard(); // moves the card from the player's hand to the discard pile
+        if (isAllowed()) {
+            updatePlayedCard();
             if (playedCard.toString().contains("WILD")) {
-                allowWild(); // asks for the player to pick a color for continuation of the game.  Sets the variable wildColor to the input color
+                allowWild();
             }
             if (playedCard.toString().contains("REVERSE")) {
-                reverse(); // this needs to be fixed.  The arraylist reverses but the player is made to play again.  Need to fix this.
+                reverse();
             }
         } else {
             System.out.println("You cannot play that card! Penalty!");
-            penalty(1); // this method makes the player pick a card and skip a turn
+            penalty(1);
         }
         if (playedCard.toString().equals("WILDFOUR") || playedCard.toString().contains("DRAWTWO")) {
-            cardsToBePickedUp = true; // this variable ensures that the next player picks a cards
+            cardsToBePickedUp = true;
         }
     }
 
-    /**
-     * // moves the card from the player's hand to the discard pile
-     */
     private void updatePlayedCard() {
         discardPile.push(playedCard);
-        if (currentPlayer.getHand().size()!=1) {
+        if (currentPlayer.getHand().size() != 1) {
             currentPlayer.getHand().remove(playedCard);
         } else {
             completeRound();
         }
     }
 
-    /**
-     * This method
-     */
     private void completeRound() {
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println("This round is over!");
@@ -95,7 +89,7 @@ public class UnoGame {
 
     public boolean isAllowed() {
         if (discardPile.peek().toString().contains("WILD")) {
-            return validateWild(); //If the opencard is WILD and it is the forst card of the game
+            return validateWild();
         }
         if (playedCard.toString().contains("WILD")) {
             return isWildAllowed();
