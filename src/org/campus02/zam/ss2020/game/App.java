@@ -73,7 +73,7 @@ public class App {
     private void readUserInput() {
         System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
         System.out.print("What card would you like to play? :");
-        userInput = input.next();
+        userInput = input.next().toUpperCase();
         System.out.println("-------------------------------------------------------------------");
     }
 
