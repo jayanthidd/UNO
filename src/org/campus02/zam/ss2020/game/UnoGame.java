@@ -28,7 +28,7 @@ public class UnoGame {
     public UnoGame() {
         this.players = new ArrayList<>();
         this.discardPile = new Stack<>();
-        this.deckPile = new Deck().deck;
+        this.deckPile = new Stack<>();
         this.cardsToBePickedUp = false;
         this.skip = false;
     }
@@ -41,6 +41,10 @@ public class UnoGame {
         }
     }
 
+    public void createNewDeck(){
+        deckPile = new Deck().deck;
+    }
+
     public void processCard() {
         if (isAllowed()) {
             updatePlayedCard();
@@ -49,6 +53,9 @@ public class UnoGame {
             }
             if (playedCard.toString().contains("REVERSE")) {
                 reverse();
+            }
+            if (playedCard.toString().contains("SKIP")){
+                skip = true;
             }
         } else {
             System.out.println("You cannot play that card! Penalty!");
@@ -59,16 +66,12 @@ public class UnoGame {
         }
     }
 
-    private void updatePlayedCard() {
+    private void updatePlayedCard()  {
         discardPile.push(playedCard);
-        if (currentPlayer.getHand().size() != 1) {
-            currentPlayer.getHand().remove(playedCard);
-        } else {
-            completeRound();
-        }
+        currentPlayer.getHand().remove(playedCard);
     }
 
-    private void completeRound() {
+    public void completeRound() {
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println("This round is over!");
         System.out.println("Congratulations " + currentPlayer.getName());
@@ -78,7 +81,7 @@ public class UnoGame {
     private void allowWild() {
         System.out.print("What color would you like to change to? : ");
         Scanner scanner = new Scanner(System.in);
-        String color = scanner.next();
+        String color = scanner.next().toUpperCase();
         if (Arrays.toString(Type.values()).contains(color)) {//checking if the color entered by the user is valid
             wildColor = color;
         } else {
@@ -87,7 +90,18 @@ public class UnoGame {
         }
     }
 
+    /**
+     * checks if the card played is allowed based on the type and the value of the card
+     * @return
+     */
     public boolean isAllowed() {
+        if (discardPile.peek().toString().contains("WILD") && playedCard.toString().contains("WILD")){
+            if (currentPlayer.getHand().contains(wildColor)){
+                return false;
+            } else {
+                return true;
+            }
+        }
         if (discardPile.peek().toString().contains("WILD")) {
             return validateWild();
         }
@@ -148,13 +162,14 @@ public class UnoGame {
 
      */
     public void reverse() {
-        int count = players.size() - 1; // 3
-        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
-            Player temp = players.get(count);
-            players.set(count, players.get(i)); // postavlja count na poziciju 0, jer je i = 0;
-            players.set(i, temp);
-            count--;
-        }
+        Collections.reverse(players);
+//        int count = players.size() - 1; // 3
+//        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
+//            Player temp = players.get(count);
+//            players.set(count, players.get(i)); // postavlja count na poziciju 0, jer je i = 0;
+//            players.set(i, temp);
+//            count--;
+//        }
 
     }
 
@@ -239,10 +254,6 @@ public class UnoGame {
         return skip;
     }
 
-    public void setSkip(boolean skip) {
-        this.skip = skip;
-    }
-
     public UnoCard robotPlays(Player robot, UnoCard currentCard) {
         for (UnoCard c : robot.getHand()) {
             if (c.value.equals(currentCard.value) || c.type.equals(currentCard.type)) {
@@ -268,8 +279,9 @@ public class UnoGame {
         playedCard = deckPile.pop();
         currentPlayer.getHand().add(playedCard);
         if (isAllowed()){
-            updatePlayedCard();
             System.out.println("Your new card " + playedCard + " has been played");
+            processCard();
+            updatePlayedCard();
         } else {
             System.out.println("You cannot play the new card!");
             System.out.println("Your new cards are : " + currentPlayer.getHand());

@@ -1,9 +1,11 @@
 package org.campus02.zam.ss2020.game;
+import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
 import java.io.PrintStream;
 import java.sql.SQLOutput;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
@@ -43,9 +45,13 @@ public class App {
                             readUserInput();
                             updateState();
                         }
-                        if (p.getHand().size()==1) {
-                            roundEnded = true; // round is still going!
+                        if(p.getHand().isEmpty()){
+                            break;
                         }
+                    }
+                    if (game.getCurrentPlayer().getHand().isEmpty()){
+                        roundEnded();
+                        break;
                     }
                 }
                 Thread.sleep(100);
@@ -64,7 +70,10 @@ public class App {
     }
 
     private void initializeRound() {
-        Collections.shuffle(game.getDeckPile());
+        System.out.println("New Round Begins! ");
+        roundEnded = false;
+        game.createNewDeck();
+        Collections.shuffle(game.getDeckPile());//need to change this to a create new deck method.  Perhaps the empty stack exception will disappear.
         game.dealCards();
         System.out.println();
         game.getDiscardPile().add(game.getDeckPile().pop());
@@ -113,8 +122,9 @@ public class App {
         // Print(show) the current hand of the player
 
     }
-    private boolean roundEnded(){
-        return false;
+    private void roundEnded(){
+        game.completeRound();
+        roundEnded = true;
     }
 
     private boolean gameEnded(){
@@ -123,5 +133,17 @@ public class App {
 
     private void printFinalScore(){
         game.printPlayerScores();
+    }
+
+    public static void main(String[] args) {
+        LinkedList<Player> players = new LinkedList<>();
+        Player p = new HumanPlayer("P");
+        Player q = new HumanPlayer("Q");
+        Player r = new HumanPlayer("R");
+        Player s = new HumanPlayer("S");
+        players.add(p);
+        players.add(q);
+        players.add(r);
+        players.add(s);
     }
 }
