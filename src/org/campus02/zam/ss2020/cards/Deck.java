@@ -37,7 +37,6 @@ public class Deck {
                 }
             }
         }
-        System.out.println();
     }
 
     @Override
@@ -48,12 +47,10 @@ public class Deck {
     }
 
     public void shuffle () {
-        ArrayList<String> sd = new ArrayList<>();
         Collections.shuffle(deck);
-        System.out.println(deck);
     }
-    public ArrayList<UnoCard> dealCards() {
 
+    public ArrayList<UnoCard> dealCards() {
         ArrayList<UnoCard> deal = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             UnoCard card = deck.pop();

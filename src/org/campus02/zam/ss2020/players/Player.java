@@ -8,17 +8,13 @@ public abstract class Player {
     private String name;
     private int points;
     private ArrayList<UnoCard> hand;
-    private boolean isMyTurn = false;
-    private boolean saidUNO = true;
-    private boolean drawnCard = false;
+    private boolean UNOstatus;
 
     public Player(String name) {
         this.name = name;
         this.points = 0;
         this.hand = new ArrayList<>();
-    }
-    public void setDrawnCard(boolean b){
-        this.drawnCard=b;
+        this.UNOstatus = false;
     }
 
     public String getName() {
@@ -62,28 +58,11 @@ public abstract class Player {
         return false;
     }
 
-    public boolean isMyTurn(){
-        return isMyTurn;
+    public boolean isUNOstatus() {
+        return UNOstatus;
     }
 
-    public boolean saysUNO(){
-        return saidUNO;
+    public void setUNOstatus(boolean UNOstatus) {
+        this.UNOstatus = UNOstatus;
     }
-
-    public void setSaidUNO(boolean saidUNO) {
-        this.saidUNO = saidUNO;
-    }
-
-    /*public void playsCard (UnoCard card, UnoCard openCard, Player player) {
-
-        UnoGame game = new UnoGame();
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).equals(openCard) && game.isAllowed(card, openCard, player)) {
-                hand.remove(i);
-
-            }
-        }
-    }
-    
-     */
 }

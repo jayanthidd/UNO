@@ -2,11 +2,10 @@ package org.campus02.zam.ss2020.game;
 import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
+
 import java.io.PrintStream;
 import java.sql.SQLOutput;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     UnoGame game = new UnoGame();
@@ -39,7 +38,7 @@ public class App {
                             continue;
                         }
                         if (p.getName().contains("Robot")) {
-                                game.robotPlays(p, game.getDiscardPile().peek());// need to write this method properly.  Currently, there is no logic.
+                                game.robotPlays(p, game.getDiscardPile().peek());// need to write this method.  Currently, there is no logic.
                         } else {
                             printState();
                             readUserInput();
@@ -64,18 +63,20 @@ public class App {
 
     private void initializeGame() {
         game.createPlayers();
-        //Create order of players --- needs to be shuffled
-        //Create a Deck (its on Class UnoGame)
-        //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame) - we are doing this part in Initialise round!
+        //Create order of players --- completed
+        //Create a Deck ----completed
+        //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame) - completed
     }
 
     private void initializeRound() {
         System.out.println("New Round Begins! ");
         roundEnded = false;
+        game.reset();
         game.createNewDeck();
-        Collections.shuffle(game.getDeckPile());//need to change this to a create new deck method.  Perhaps the empty stack exception will disappear.
+        Collections.shuffle(game.getDeckPile());
+        //System.out.println(game.getDeckPile().size());
         game.dealCards();
-        System.out.println();
+        //System.out.println(game.getDeckPile().size());
         game.getDiscardPile().add(game.getDeckPile().pop());
     }
 
@@ -100,14 +101,18 @@ public class App {
             game.drawCard();
         }else if (userInput.toUpperCase().equals("SKIP")){
             return;
+        } else if (userInput.toUpperCase().equals("HELP")) {
+                game.printHelp();
+                readUserInput();
+                updateState();
         } else {
             System.out.println("Invalid entry");
             readUserInput();
             updateState();
         }
-        // Read the user input (what will he play?)
-        // Validate the User input (can he play it?)
-        // Update the state and show the current print state
+        // Read the user input (what will he play?) - completed
+        // Validate the User input (can he play it?) - completed
+        // Update the state and show the current print state - completed
     }
 
     private void printState() {
@@ -118,8 +123,8 @@ public class App {
         } else {
             System.out.println("The Open Card is : " + game.getDiscardPile().peek());
         }
-        // Print(show) the Top Card of the discard pile
-        // Print(show) the current hand of the player
+        // Print(show) the Top Card of the discard pile - completed
+        // Print(show) the current hand of the player - completed
 
     }
     private void roundEnded(){
@@ -133,17 +138,5 @@ public class App {
 
     private void printFinalScore(){
         game.printPlayerScores();
-    }
-
-    public static void main(String[] args) {
-        LinkedList<Player> players = new LinkedList<>();
-        Player p = new HumanPlayer("P");
-        Player q = new HumanPlayer("Q");
-        Player r = new HumanPlayer("R");
-        Player s = new HumanPlayer("S");
-        players.add(p);
-        players.add(q);
-        players.add(r);
-        players.add(s);
     }
 }

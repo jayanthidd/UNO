@@ -46,6 +46,13 @@ public class UnoGame {
     }
 
     public void processCard() {
+        if (currentPlayer.getHand().size()==2){
+            if (!currentPlayer.isUNOstatus()){
+                System.out.println("You did not say UNO");
+                penalty(1);
+                return;
+            }
+        }
         if (isAllowed()) {
             updatePlayedCard();
             if (playedCard.toString().contains("WILD")) {
@@ -163,6 +170,7 @@ public class UnoGame {
      */
     public void reverse() {
         Collections.reverse(players);
+
 //        int count = players.size() - 1; // 3
 //        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
 //            Player temp = players.get(count);
@@ -233,7 +241,7 @@ public class UnoGame {
         for (Player p : players) {
             if (p.equals(currentPlayer)) {
                 if (p.getHand().size() == 2) {
-                    p.setSaidUNO(true);
+                    p.setUNOstatus(true);
                     System.out.println(p.getName() + " said UNO");
                     return true;
                 } else {
@@ -307,13 +315,6 @@ public class UnoGame {
         System.out.println(players);
     }
 
-    public static void main(String[] args) {
-        UnoGame game = new UnoGame();
-        Player p = new HumanPlayer("p");
-        game.completePlayers();
-        game.dealCards();
-    }
-
     public boolean isCard(String userInput) {
         for (UnoCard c : currentPlayer.getHand()) {
             if (c.toString().equals(userInput)) {
@@ -350,5 +351,13 @@ public class UnoGame {
 
     public String getWildColor() {
         return wildColor;
+    }
+
+    public void reset() {
+        cardsToBePickedUp = false;
+        skip = false;
+        currentPlayer = null;
+        playedCard = null;
+        wildColor = null;
     }
 }

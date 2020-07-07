@@ -12,7 +12,7 @@ public class UnoCard {
         this.type = type;
         this.value = value;
         card = type.name() + value.name();
-        cardPoints = value.points; // need to check if this works
+        cardPoints = value.points;
     }
 
     public int getCardPoints() {
