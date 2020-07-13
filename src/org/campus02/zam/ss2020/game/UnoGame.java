@@ -185,6 +185,24 @@ public class UnoGame {
 
     }
 
+//    public Stack<UnoCard> renewDeckPile() {
+//        // if the size of the deck is empty
+//        if (deckPile.empty()) {
+//            // notice the openCard(topCard) of the pile
+//            UnoCard topCard = discardPile.pop();
+//            // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
+//            deckPile.addAll(discardPile);
+//            // mix the rest of the discardPile
+//            Collections.shuffle(discardPile);
+//            // add the topCard to the Pile
+//            discardPile.push(topCard);
+//        }
+//        return deckPile;
+//    }
+
+
+
+
 
     public void dealCards() {
         for (Player p : players) {

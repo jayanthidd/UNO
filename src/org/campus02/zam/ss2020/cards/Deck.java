@@ -50,6 +50,8 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
+
+
     public ArrayList<UnoCard> dealCards() {
         ArrayList<UnoCard> deal = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
