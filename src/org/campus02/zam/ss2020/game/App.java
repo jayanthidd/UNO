@@ -27,8 +27,8 @@ public class App {
             do {
                 initializeRound();
                 while (!roundEnded) {
-                    for (Player p : game.getPlayers()) {
-                        game.setCurrentPlayer(p);
+                    for (int i = 0; i<4; i++) {
+                        game.setCurrentPlayer(game.getPlayers().get(i));
                         if (game.isCardsToBePickedUp()) {
                             game.pickUpCards();
                             continue;
@@ -36,15 +36,15 @@ public class App {
                         if (game.isSkip()){
                             game.skip();
                             continue;
-                        }
-                        if (p.getName().contains("Robot")) {
-                                game.robotPlays(p, game.getDiscardPile().peek());// need to write this method.  Currently, there is no logic.
+                        } else if (game.isReverse()){
+                            game.setReverse(false);
+                            i++;
                         } else {
                             printState();
                             readUserInput();
                             updateState();
                         }
-                        if(p.getHand().isEmpty()){
+                        if(game.getCurrentPlayer().getHand().isEmpty()){
                             break;
                         }
                     }

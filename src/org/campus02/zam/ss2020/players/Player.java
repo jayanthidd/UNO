@@ -1,6 +1,7 @@
 package org.campus02.zam.ss2020.players;
 
 import org.campus02.zam.ss2020.cards.UnoCard;
+import org.campus02.zam.ss2020.game.UnoGame;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,8 @@ public abstract class Player {
     public void setHand(ArrayList<UnoCard> hand) {
         this.hand = hand;
     }
+
+    public abstract void playCard();
 
     @Override
     public String toString() {

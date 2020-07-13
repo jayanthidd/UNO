@@ -12,18 +12,20 @@ import java.util.*;
 /**
  * Data Structures used:
  * deckpile : Stack - no search operations performed and we need to always open only the top card.
- * discardpile : Stack - no search operations performed and we need to always open only the top card.
+ * discardpile : Stack - no search operations performed and we need to always only add a card at the top and look at the top card.
  * players : LinkedList - no search operations performed but need to be able to easily skip and reverse the order
  */
 public class UnoGame {
     private ArrayList<Player> players;// linkedlist
-    private Stack<UnoCard> discardPile;
-    private Stack<UnoCard> deckPile;
-    public String wildColor;
+    protected Stack<UnoCard> discardPile;
+    protected Stack<UnoCard> deckPile;
+    protected String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
     private boolean skip;
+    private String userInput;
+    private boolean reverse;
 
     public UnoGame() {
         this.players = new ArrayList<>();
@@ -31,6 +33,7 @@ public class UnoGame {
         this.deckPile = new Stack<>();
         this.cardsToBePickedUp = false;
         this.skip = false;
+        this.reverse = false;
     }
 
     public void addPlayer(Player p) {
@@ -170,7 +173,7 @@ public class UnoGame {
      */
     public void reverse() {
         Collections.reverse(players);
-
+        reverse = true;
 //        int count = players.size() - 1; // 3
 //        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
 //            Player temp = players.get(count);
@@ -359,5 +362,13 @@ public class UnoGame {
         currentPlayer = null;
         playedCard = null;
         wildColor = null;
+    }
+
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    public boolean isReverse() {
+        return reverse;
     }
 }
