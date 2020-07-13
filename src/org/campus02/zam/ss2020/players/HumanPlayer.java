@@ -14,25 +14,10 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void playCard() {
+    public String playCard() {
         Scanner input = new Scanner(System.in);
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
-        userInput = input.next().toUpperCase();
-        if(isCard()) {
-  //          game.processCard();
-        }
-
+        return input.next().toUpperCase();
     }
-
-    public boolean isCard() {
-        for (UnoCard c : getHand()) {
-            if (c.toString().equals(userInput)) {
-                playedCard = c;
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

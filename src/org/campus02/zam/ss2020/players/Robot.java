@@ -9,7 +9,7 @@ public class Robot extends Player {
     }
 
     @Override
-    public void playCard() {
+    public String playCard() {
 //        for (UnoCard c : getHand()) {
 //            if (c.value.equals(currentCard.value) || c.type.equals(currentCard.type)) {
 //                return c;
@@ -21,5 +21,6 @@ public class Robot extends Player {
 //                }
 //            }
 //        }
+        return null;
     }
 }

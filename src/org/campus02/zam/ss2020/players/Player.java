@@ -38,7 +38,7 @@ public abstract class Player {
         this.hand = hand;
     }
 
-    public abstract void playCard();
+    public abstract String playCard();
 
     @Override
     public String toString() {

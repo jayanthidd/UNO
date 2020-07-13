@@ -38,7 +38,8 @@ public class App {
                             continue;
                         } else if (game.isReverse()){
                             game.setReverse(false);
-                            i++;
+                            continue;
+
                         } else {
                             printState();
                             readUserInput();
@@ -81,9 +82,7 @@ public class App {
     }
 
     private void readUserInput() {
-        System.out.println("Your cards are : " + game.getCurrentPlayer().getHand());
-        System.out.print("What card would you like to play? :");
-        userInput = input.next().toUpperCase();
+        userInput = game.getCurrentPlayer().playCard();
         System.out.println("-------------------------------------------------------------------");
     }
 

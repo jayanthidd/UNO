@@ -92,7 +92,8 @@ public class UnoGame {
         System.out.print("What color would you like to change to? : ");
         Scanner scanner = new Scanner(System.in);
         String color = scanner.next().toUpperCase();
-        if (Arrays.toString(Type.values()).contains(color)) {//checking if the color entered by the user is valid
+
+        if (color.equals(Type.GREEN.toString())|| color.equals(Type.BLUE.toString())||color.equals(Type.RED.toString())|| color.equals(Type.YELLOW.toString())) {//checking if the color entered by the user is valid
             wildColor = color;
         } else {
             System.out.println("Invalid Entry!");
