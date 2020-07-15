@@ -29,11 +29,13 @@ public class Robot extends Player {
             }
         }
             for (UnoCard w : getHand()) {
-                if (w.toString().contains("WILD")) {
+                if (w.toString().contains("WILD") && (!w.value.equals(playedCard.value) || !w.type.equals(playedCard.type))) {
                     System.out.println(w.toString());
                     return w.toString();
                 }
-            }
+            } if (game.checkUno()){
+            System.out.println("UNO");
+        }
         return "DRAW";
     }
 
@@ -45,7 +47,7 @@ public class Robot extends Player {
                 return c.type.toString();
             }
         }
-        System.out.println("GREEM");// we need to see if we can give out random colors
+        System.out.println("GREEN");// we need to see if we can give out random colors
         return "GREEN";
     }
 }
