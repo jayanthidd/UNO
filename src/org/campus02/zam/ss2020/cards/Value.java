@@ -14,8 +14,8 @@ public enum Value {
     REVERSE (20),
     DRAWTWO (20),
     SKIP (20),
-    WILD (50),
-    WILDFOUR (50);
+    COLOR (50),
+    PLUS4 (50);
     int points;
     Value (int points){
         this.points = points;

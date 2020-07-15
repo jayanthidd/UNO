@@ -82,7 +82,7 @@ public class App {
     }
 
     private void readUserInput() {
-        userInput = game.getCurrentPlayer().playCard();
+        userInput = game.getCurrentPlayer().playCard(game.discardPile.peek());
         System.out.println("-------------------------------------------------------------------");
     }
 

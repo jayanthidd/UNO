@@ -19,20 +19,33 @@ public class Robot extends Player {
     }
 
     @Override
-    public String playCard() {
+    public String playCard(UnoCard playedCard) {
+        System.out.println("Your cards are : " + getHand());
+        System.out.print("What card would you like to play? :");
         for (UnoCard c : getHand()) {
             if (c.value.equals(playedCard.value) || c.type.equals(playedCard.type)) {
-                return "Karte gespielt";
-            } else {
-                for (UnoCard w : getHand()) {
-                    if (w.toString().contains("WILD")) {
-                        return "Karte gespielt";
-                    }
-                }
-            }if (!c.value.equals(playedCard.value) || !c.type.equals(playedCard.type)){
-                game.drawCard();
+                System.out.println(c.toString());
+                return c.toString();
             }
         }
-        return null;
+            for (UnoCard w : getHand()) {
+                if (w.toString().contains("WILD")) {
+                    System.out.println(w.toString());
+                    return w.toString();
+                }
+            }
+        return "DRAW";
+    }
+
+    @Override
+    public String playWild() {
+        for (UnoCard c : getHand()) {
+            if (!c.type.toString().contains("WILD")) {
+                System.out.println(c.type.toString());
+                return c.type.toString();
+            }
+        }
+        System.out.println("GREEM");// we need to see if we can give out random colors
+        return "GREEN";
     }
 }

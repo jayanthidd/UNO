@@ -4,7 +4,8 @@ public enum Type {
     RED,
     GREEN,
     BLUE,
-    YELLOW;
+    YELLOW,
+    WILD;
 
 
     private  static final Type[] types = Type.values();

@@ -79,6 +79,7 @@ public class UnoGame {
     private void updatePlayedCard()  {
         discardPile.push(playedCard);
         currentPlayer.getHand().remove(playedCard);
+        renewDeckPile();
     }
 
     public void completeRound() {
@@ -90,8 +91,8 @@ public class UnoGame {
 
     private void allowWild() {
         System.out.print("What color would you like to change to? : ");
-        Scanner scanner = new Scanner(System.in);
-        String color = scanner.next().toUpperCase();
+
+        String color = currentPlayer.playWild();
 
         if (color.equals(Type.GREEN.toString())|| color.equals(Type.BLUE.toString())||color.equals(Type.RED.toString())|| color.equals(Type.YELLOW.toString())) {//checking if the color entered by the user is valid
             wildColor = color;
@@ -182,27 +183,22 @@ public class UnoGame {
 //            players.set(i, temp);
 //            count--;
 //        }
-
     }
 
-//    public Stack<UnoCard> renewDeckPile() {
-//        // if the size of the deck is empty
-//        if (deckPile.empty()) {
-//            // notice the openCard(topCard) of the pile
-//            UnoCard topCard = discardPile.pop();
-//            // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
-//            deckPile.addAll(discardPile);
-//            // mix the rest of the discardPile
-//            Collections.shuffle(discardPile);
-//            // add the topCard to the Pile
-//            discardPile.push(topCard);
-//        }
-//        return deckPile;
-//    }
-
-
-
-
+    public void renewDeckPile() {
+        // if the size of the deck is empty
+        if (deckPile.size()<=4) {
+            // notice the openCard(topCard) of the pile
+            UnoCard topCard = discardPile.pop();
+            discardPile.removeAllElements();
+            // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
+            deckPile.addAll(discardPile);
+            // mix the rest of the discardPile
+            Collections.shuffle(discardPile);
+            // add the topCard to the Pile
+            discardPile.push(topCard);
+        }
+    }
 
     public void dealCards() {
         for (Player p : players) {

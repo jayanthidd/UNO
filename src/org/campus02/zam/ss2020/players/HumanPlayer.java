@@ -14,10 +14,17 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public String playCard() {
+    public String playCard(UnoCard playedCard) {
         Scanner input = new Scanner(System.in);
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
         return input.next().toUpperCase();
+    }
+
+    @Override
+    public String playWild() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.next().toUpperCase();
+
     }
 }

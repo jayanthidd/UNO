@@ -15,16 +15,18 @@ public class Deck {
         this.deck = new Stack<>();
         UnoCard card;
         for (Value v : Value.values()){
-            if (v.name().contains("WILD")){
-                card = new UnoCard(v);
-                deck.push(card);
-                deck.push(card);
-                deck.push(card);
-                deck.push(card);
-            }
-            else {
+
                 for (Type t : Type.values()) {
-                    if (!v.name().contains("WILD")) {
+
+                    if (t.name().contains("WILD")){
+                        if (v.name().contains("COLOR")||v.name().contains("PLUS4")) {
+                            card = new UnoCard(t, v);
+                            deck.push(card);
+                            deck.push(card);
+                            deck.push(card);
+                            deck.push(card);
+                        }
+                    } else if (!v.name().contains("COLOR") && !v.name().contains("PLUS4")) {
                         if (v.name().contains("ZERO")) {
                             card = new UnoCard(t, v);
                             deck.push(card);
@@ -34,8 +36,9 @@ public class Deck {
                             deck.push(card);
                         }
                     }
+
                 }
-            }
+
         }
     }
 
