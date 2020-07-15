@@ -29,6 +29,7 @@ public class Robot extends Player {
         }
         if (getHand().size()==2) {
             System.out.println("UNO");
+            return "UNO";
         }
         if (playedCard.toString().contains("WILD")){
             for (UnoCard c : getHand()){
