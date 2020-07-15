@@ -71,7 +71,7 @@ public class UnoGame {
             System.out.println("You cannot play that card! Penalty!");
             penalty(1);
         }
-        if (playedCard.toString().equals("WILDFOUR") || playedCard.toString().contains("DRAWTWO")) {
+        if (playedCard.toString().equals("WILDPLUS4") || playedCard.toString().contains("DRAWTWO")) {
             cardsToBePickedUp = true;
         }
     }
@@ -157,7 +157,7 @@ public class UnoGame {
     public void pickUpCards() {
         if (discardPile.peek().toString().contains("DRAWTWO")) {
             penalty(2);
-        } else if (discardPile.peek().toString().contains("WILDFOUR")) {
+        } else if (discardPile.peek().toString().contains("WILDPLUS4")) {
             penalty(4);
         }
         System.out.println("-------------------------------------------------------------------");

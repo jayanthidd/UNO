@@ -64,4 +64,11 @@ public class Deck {
         System.out.println(deck.size());
         return deal;
     }
+
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        System.out.println(deck.deck.size());
+        for (UnoCard c : deck.deck)
+            System.out.print(c +" , ");
+    }
 }

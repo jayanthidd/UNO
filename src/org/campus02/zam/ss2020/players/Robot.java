@@ -22,6 +22,11 @@ public class Robot extends Player {
     public String playCard(UnoCard playedCard, String wildColor) {
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (playedCard.toString().contains("WILD")){
             for (UnoCard c : getHand()){
                 if (c.toString().contains(wildColor)){
