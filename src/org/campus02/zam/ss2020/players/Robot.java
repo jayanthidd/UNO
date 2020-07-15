@@ -9,11 +9,6 @@ import java.util.Stack;
 
 public class Robot extends Player {
 
-    private UnoCard playedCard;
-    private Deck deck;
-    UnoGame game;
-
-
     public Robot(String name) {
         super(name);
     }
@@ -23,11 +18,11 @@ public class Robot extends Player {
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (getHand().size()==2) {
+        if (getHand().size()==2 && !isUNOstatus()) {
             System.out.println("UNO");
             return "UNO";
         }
