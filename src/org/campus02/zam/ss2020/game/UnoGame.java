@@ -187,7 +187,7 @@ public class UnoGame {
     }
 
     public void renewDeckPile() {
-        // if the size of the deck is empty
+        // if the size of the deck is less equal to 4
         if (deckPile.size()<=4) {
             // notice the openCard(topCard) of the pile
             UnoCard topCard = discardPile.pop();
