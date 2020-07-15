@@ -52,23 +52,4 @@ public class Deck {
     public void shuffle () {
         Collections.shuffle(deck);
     }
-
-
-
-    public ArrayList<UnoCard> dealCards() {
-        ArrayList<UnoCard> deal = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            UnoCard card = deck.pop();
-            deal.add(card);
-        }
-        System.out.println(deck.size());
-        return deal;
-    }
-
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        System.out.println(deck.deck.size());
-        for (UnoCard c : deck.deck)
-            System.out.print(c +" , ");
-    }
 }

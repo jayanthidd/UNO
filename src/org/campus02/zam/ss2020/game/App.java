@@ -12,6 +12,7 @@ public class App {
     private final Scanner input;
     private final PrintStream output;
     public static boolean roundEnded;
+    public static boolean gameEnded;
     private String userInput;
 
 
@@ -19,6 +20,7 @@ public class App {
         this.input = input;
         this.output = output;
         this.roundEnded = false;
+        this.gameEnded = false;
     }
 
     public void Run() {
@@ -29,6 +31,7 @@ public class App {
                 while (!roundEnded) {
                     for (int i = 0; i<4; i++) {
                         game.setCurrentPlayer(game.getPlayers().get(i));
+                        game.getPlayers().get(i).setUNOstatus(false);
                         if (game.isCardsToBePickedUp()) {
                             game.pickUpCards();
                             continue;
@@ -55,7 +58,7 @@ public class App {
                     }
                 }
                 Thread.sleep(100);
-            } while (!gameEnded());
+            } while (!gameEnded);
             printFinalScore();
         }catch (Exception ex){
             output.println(ex);
@@ -64,25 +67,16 @@ public class App {
 
     private void initializeGame() {
         game.createPlayers();
-        //Create order of players --- completed
-        //Create a Deck ----completed
-        //Create Hands/Deal Cards/Set Hands for Players (Class UnoGame) - completed
     }
 
     private void initializeRound() {
         System.out.println("New Round Begins! ");
         roundEnded = false;
         game.reset();
-        game.createNewDeck();
-        Collections.shuffle(game.getDeckPile());
-        //System.out.println(game.getDeckPile().size());
-        game.dealCards();
-        //System.out.println(game.getDeckPile().size());
-        game.getDiscardPile().add(game.getDeckPile().pop());
     }
 
     private void readUserInput() {
-        userInput = game.getCurrentPlayer().playCard(game.discardPile.peek(), game.wildColor);
+        userInput = game.getCurrentPlayer().playCard(game.discardPile.peek(), game.getWildColor());
         System.out.println("-------------------------------------------------------------------");
     }
 
@@ -98,12 +92,14 @@ public class App {
             }
         }else if (userInput.toUpperCase().equals("DRAW")){
             game.drawCard();
-        }else if (userInput.toUpperCase().equals("SKIP")){
-            return;
+        }else if (userInput.toUpperCase().equals("POINTS")){
+            game.printPlayerScores();
+            readUserInput();
+            updateState();
         } else if (userInput.toUpperCase().equals("HELP")) {
-                game.printHelp();
-                readUserInput();
-                updateState();
+            game.printHelp();
+            readUserInput();
+            updateState();
         } else {
             System.out.println("Invalid entry");
             readUserInput();
@@ -129,10 +125,17 @@ public class App {
     private void roundEnded(){
         game.completeRound();
         roundEnded = true;
+        for (Player p : game.getPlayers()){
+            if(p.getPoints()>=100)
+                gameEnded();
+        }
     }
 
-    private boolean gameEnded(){
-        return false;
+    private void gameEnded(){
+        System.out.println();
+        System.out.println("This game has ended!");
+        game.printPlayerScores();
+        gameEnded = true;
     }
 
     private void printFinalScore(){

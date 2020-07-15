@@ -10,6 +10,7 @@ import org.campus02.zam.ss2020.players.Robot;
 import java.util.*;
 
 /**
+ * This class manages the entire game.  All the rules of the game are validated here. This class has access to all other classes within the UNO project
  * Data Structures used:
  * deckpile : Stack - no search operations performed and we need to always open only the top card.
  * discardpile : Stack - no search operations performed and we need to always only add a card at the top and look at the top card.
@@ -19,12 +20,11 @@ public class UnoGame {
     private ArrayList<Player> players;// linkedlist
     protected Stack<UnoCard> discardPile;
     protected Stack<UnoCard> deckPile;
-    public String wildColor;
+    private String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
     private boolean skip;
-    private String userInput;
     private boolean reverse;
 
     public UnoGame() {
@@ -85,9 +85,12 @@ public class UnoGame {
 
     public void completeRound() {
         currentPlayer.setPoints(combineHandsFromAllPlayers());
+        System.out.println();
         System.out.println("This round is over!");
         System.out.println("Congratulations " + currentPlayer.getName());
+        System.out.println();
         printPlayerScores();
+        System.out.println();
     }
 
     private void allowWild() {
@@ -108,6 +111,12 @@ public class UnoGame {
      * @return
      */
     public boolean isAllowed() {
+        if (playedCard.toString().contains("WILD")) {
+            return isWildAllowed();
+        }
+        if (playedCard.value == discardPile.peek().value || playedCard.type == discardPile.peek().type) {
+            return true;
+        }
         if (discardPile.peek().toString().contains("WILD") && playedCard.toString().contains("WILD")){
             if (currentPlayer.getHand().contains(wildColor)){
                 return false;
@@ -118,12 +127,7 @@ public class UnoGame {
         if (discardPile.peek().toString().contains("WILD")) {
             return validateWild();
         }
-        if (playedCard.toString().contains("WILD")) {
-            return isWildAllowed();
-        } else if (playedCard.value == discardPile.peek().value || playedCard.type == discardPile.peek().type) {
-            return true;
-        } else
-            return false;
+        return false;
     }
 
     /**
@@ -161,6 +165,7 @@ public class UnoGame {
             penalty(4);
         }
         System.out.println("-------------------------------------------------------------------");
+        System.out.println("The Open Card is : " + discardPile.peek());
         System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
         System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
         cardsToBePickedUp = false;
@@ -177,31 +182,15 @@ public class UnoGame {
     public void reverse() {
         Collections.reverse(players);
         reverse = true;
-//        int count = players.size() - 1; // 3
-//        for (int i = 0; i < count/2; i++) { // we would like to add a count in respect of number of players
-//            Player temp = players.get(count);
-//            players.set(count, players.get(i)); // postavlja count na poziciju 0, jer je i = 0;
-//            players.set(i, temp);
-//            count--;
-//        }
     }
 
     public void renewDeckPile() {
-        // if the size of the deck is less equal to 4
         if (deckPile.size()<=4) {
-            // notice the openCard(topCard) of the pile
             UnoCard topCard = discardPile.pop();
-            // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
             deckPile.addAll(discardPile);
             discardPile.removeAllElements();
-            // mix the rest of the discardPile
             Collections.shuffle(deckPile);
-            // add the topCard to the Pile
             discardPile.push(topCard);
-            System.out.println("Cards renewed!");
-            for(UnoCard c : deckPile)
-                System.out.print(c.toString() + ", ");
-
         }
     }
 
@@ -282,21 +271,6 @@ public class UnoGame {
         return skip;
     }
 
-    public UnoCard robotPlays(Player robot, UnoCard currentCard) {
-        for (UnoCard c : robot.getHand()) {
-            if (c.value.equals(currentCard.value) || c.type.equals(currentCard.type)) {
-                return c;
-            } else {
-                for (UnoCard w : robot.getHand()) {
-                    if (w.toString().contains("WILD")) {
-                        return w;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     public void printHelp() {
         System.out.println("Key in the name of the card you wish to play!");
         System.out.println("DRAW - Take a new card to play");
@@ -319,11 +293,14 @@ public class UnoGame {
     }
 
     public void createPlayers() {
+        System.out.println("Please enter your names.  There should be atleast one human player");
+        System.out.println("Please type 'STOP' when you want the program to add bots");
         Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < 4; i++) {
+
             System.out.print("Player Name: ");
-            String Player = scanner.next();
-            if (Player.equals("stop")) {
+            String Player = scanner.next().toUpperCase();
+            if (Player.equals("STOP")) {
                 if (players.size() == 0) {
                     System.out.println("There should be at least one human player");
                     createPlayers();
@@ -336,8 +313,10 @@ public class UnoGame {
         }
         completePlayers();
         Collections.shuffle(players);
+        System.out.println();
         System.out.println("This is the order in which players will play :");
         System.out.println(players);
+        System.out.println();
     }
 
     public boolean isCard(String userInput) {
@@ -349,8 +328,6 @@ public class UnoGame {
         }
         return false;
     }
-
-
 
     public boolean isCardsToBePickedUp() {
         return cardsToBePickedUp;
@@ -386,6 +363,13 @@ public class UnoGame {
         currentPlayer = null;
         playedCard = null;
         wildColor = null;
+        createNewDeck();
+        Collections.shuffle(getDeckPile());
+        dealCards();
+        getDiscardPile().add(getDeckPile().pop());
+        if (discardPile.peek().toString().equals("WILDPLUS4") || discardPile.peek().toString().contains("DRAWTWO")) {
+            cardsToBePickedUp = true;
+        }
     }
 
     public void setReverse(boolean reverse) {
@@ -395,4 +379,6 @@ public class UnoGame {
     public boolean isReverse() {
         return reverse;
     }
+
+
 }
