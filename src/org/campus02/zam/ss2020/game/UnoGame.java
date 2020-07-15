@@ -227,9 +227,6 @@ public class UnoGame {
     public void completePlayers() {
 
         int size = players.size();
-        if (players.size() == 0) {
-            System.out.println("There should be at least one human player");
-        }
         if (size == 4) {
             System.out.println("There are 4 players");
         } else {
@@ -327,10 +324,14 @@ public class UnoGame {
             System.out.print("Player Name: ");
             String Player = scanner.next();
             if (Player.equals("stop")) {
+                if (players.size() == 0) {
+                    System.out.println("There should be at least one human player");
+                    createPlayers();
+                }
                 System.out.println("Bots will be added to complete the players!");
                 break;
             }
-            org.campus02.zam.ss2020.players.Player p = new HumanPlayer(Player);
+            Player p = new HumanPlayer(Player);
             addPlayer(p);
         }
         completePlayers();
