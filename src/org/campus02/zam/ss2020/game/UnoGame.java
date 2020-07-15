@@ -186,15 +186,15 @@ public class UnoGame {
     }
 
     public void renewDeckPile() {
-        // if the size of the deck is empty
+        // if the size of the deck is less equal to 4
         if (deckPile.size()<=4) {
             // notice the openCard(topCard) of the pile
             UnoCard topCard = discardPile.pop();
-            discardPile.removeAllElements();
             // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
             deckPile.addAll(discardPile);
+            discardPile.removeAllElements();
             // mix the rest of the discardPile
-            Collections.shuffle(discardPile);
+            Collections.shuffle(deckPile);
             // add the topCard to the Pile
             discardPile.push(topCard);
         }
