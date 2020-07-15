@@ -19,7 +19,7 @@ public class UnoGame {
     private ArrayList<Player> players;// linkedlist
     protected Stack<UnoCard> discardPile;
     protected Stack<UnoCard> deckPile;
-    protected String wildColor;
+    public String wildColor;
     private boolean cardsToBePickedUp;
     private Player currentPlayer;
     private UnoCard playedCard;
@@ -80,6 +80,7 @@ public class UnoGame {
         discardPile.push(playedCard);
         currentPlayer.getHand().remove(playedCard);
         renewDeckPile();
+
     }
 
     public void completeRound() {
@@ -190,13 +191,17 @@ public class UnoGame {
         if (deckPile.size()<=4) {
             // notice the openCard(topCard) of the pile
             UnoCard topCard = discardPile.pop();
-            discardPile.removeAllElements();
             // create a new deckPile with the discardPile // not sure if we can shuffle before adding?
             deckPile.addAll(discardPile);
+            discardPile.removeAllElements();
             // mix the rest of the discardPile
-            Collections.shuffle(discardPile);
+            Collections.shuffle(deckPile);
             // add the topCard to the Pile
             discardPile.push(topCard);
+            System.out.println("Cards renewed!");
+            for(UnoCard c : deckPile)
+                System.out.print(c.toString());
+
         }
     }
 
@@ -311,6 +316,7 @@ public class UnoGame {
         } else {
             System.out.println("You cannot play the new card!");
             System.out.println("Your new cards are : " + currentPlayer.getHand());
+            renewDeckPile();
         }
         return;
     }

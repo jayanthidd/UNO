@@ -19,9 +19,17 @@ public class Robot extends Player {
     }
 
     @Override
-    public String playCard(UnoCard playedCard) {
+    public String playCard(UnoCard playedCard, String wildColor) {
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
+        if (playedCard.toString().contains("WILD")){
+            for (UnoCard c : getHand()){
+                if (c.toString().contains(wildColor)){
+                    System.out.println(c.toString());
+                    return c.toString();
+                }
+            }
+        }
         for (UnoCard c : getHand()) {
             if (c.value.equals(playedCard.value) || c.type.equals(playedCard.type)) {
                 System.out.println(c.toString());
@@ -34,6 +42,7 @@ public class Robot extends Player {
                     return w.toString();
                 }
             }
+        System.out.println("DRAW");
         return "DRAW";
     }
 
@@ -45,7 +54,7 @@ public class Robot extends Player {
                 return c.type.toString();
             }
         }
-        System.out.println("GREEM");// we need to see if we can give out random colors
+        System.out.println("GREEN");// we need to see if we can give out random colors
         return "GREEN";
     }
 }

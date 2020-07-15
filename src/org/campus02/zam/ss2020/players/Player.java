@@ -38,7 +38,7 @@ public abstract class Player {
         this.hand = hand;
     }
 
-    public abstract String playCard(UnoCard playedCard);
+    public abstract String playCard(UnoCard playedCard, String wildColor);
 
     public abstract String playWild();
 

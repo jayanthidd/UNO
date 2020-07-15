@@ -14,7 +14,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public String playCard(UnoCard playedCard) {
+    public String playCard(UnoCard playedCard, String wildColor) {
         Scanner input = new Scanner(System.in);
         System.out.println("Your cards are : " + getHand());
         System.out.print("What card would you like to play? :");
