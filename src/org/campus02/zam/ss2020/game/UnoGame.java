@@ -200,7 +200,7 @@ public class UnoGame {
             discardPile.push(topCard);
             System.out.println("Cards renewed!");
             for(UnoCard c : deckPile)
-                System.out.print(c.toString());
+                System.out.print(c.toString() + ", ");
 
         }
     }
