@@ -27,6 +27,9 @@ public class Robot extends Player {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if (getHand().size()==2) {
+            System.out.println("UNO");
+        }
         if (playedCard.toString().contains("WILD")){
             for (UnoCard c : getHand()){
                 if (c.toString().contains(wildColor)){
