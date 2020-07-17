@@ -27,7 +27,6 @@ public class UnoGame {
     private Player previousPlayer;
     private UnoCard playedCard;
     private boolean skip;
-    private boolean reverse;
     private UnoCard previousCard;
     private Scanner scanner;
 
@@ -37,7 +36,6 @@ public class UnoGame {
         this.deckPile = new Stack<>();
         this.cardsToBePickedUp = false;
         this.skip = false;
-        this.reverse = false;
         scanner = new Scanner(System.in);
     }
 
@@ -59,7 +57,7 @@ public class UnoGame {
                 allowWild();
             }
             if (playedCard.toString().contains("REVERSE")) {
-                reverse();
+                App.increment *= -1;
             }
             if (playedCard.toString().contains("SKIP")){
                 skip = true;
@@ -159,11 +157,7 @@ public class UnoGame {
     public boolean pickUpCards() {
         if (discardPile.peek().toString().contains("DRAWTWO")) {
             penalty(2);
-            System.out.println("-------------------------------------------------------------------");
-            System.out.println("The Open Card is : " + discardPile.peek());
-            System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
-            System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
-            cardsToBePickedUp = false;
+            printCardsPickedUp();
             return true;
         } else if (discardPile.peek().toString().contains("WILDPLUS4")) {
             System.out.println("-------------------------------------------------------------------");
@@ -171,12 +165,13 @@ public class UnoGame {
             System.out.println("The Open Card is : " + discardPile.peek());
             System.out.print("Would you like to challenge this card? Y / N : ");
             if (currentPlayer.getName().contains("Robot")){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("N");
-                penalty(4);
-                System.out.println("-------------------------------------------------------------------");
-                System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
-                System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
-                cardsToBePickedUp = false;
+                penalty(4);printCardsPickedUp();
                 return true;
             }
             String response = scanner.next().toUpperCase();
@@ -184,27 +179,19 @@ public class UnoGame {
                 return checkChallenge();
             } else {
                 penalty(4);
-                System.out.println("-------------------------------------------------------------------");
-                System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
-                System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
-                cardsToBePickedUp = false;
+                printCardsPickedUp();
                 return true;
             }
         }
         return true;
     }
 
-    /*public boolean playerMissesTurn (Player player, UnoCard openCard){
-        if (hasToPickUpCards(player, openCard)) {
-            player
-        }else if (openCard.toString().contains("SKIP")) {
-            player
-        }return false;
-
-     */
-    public void reverse() {
-        Collections.reverse(players);
-        reverse = true;
+    private void printCardsPickedUp() {
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println("The Open Card is : " + discardPile.peek());
+        System.out.println(currentPlayer.getName() + " has picked up cards and has missed a turn");
+        System.out.println(currentPlayer.getName() + "'s cards are : " + currentPlayer.getHand());
+        cardsToBePickedUp = false;
     }
 
     public void renewDeckPile() {
@@ -315,21 +302,32 @@ public class UnoGame {
         return;
     }
 
-    public void createPlayers() throws PlayerAlreadyExistsException {
+    public void createPlayers() {
         System.out.println("Please enter your names.  There should be atleast one human player");
         System.out.println("Please type 'STOP' when you want the program to add bots");
         while (players.size()!=4) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.print("Player Name: ");
             String Player = scanner.next().toUpperCase();
             for (Player pl : players){
                 if(pl.getName().equals(Player)) {
                     System.out.println("Player already exists");
-                    //throw new PlayerAlreadyExistsException();
-                    Player = null;
+                    try {
+                        throw new PlayerAlreadyExistsException();
+                    } catch (PlayerAlreadyExistsException e) {
+                        e.printStackTrace();
+                    } finally {
+                        Player = null;
+                    }
                 }
             }
-            if(Player==null)
+            if(Player==null) {
                 continue;
+            }
             if (Player.equals("STOP")) {
                 if (players.size() == 0) {
                     System.out.println("There should be at least one human player");
@@ -401,15 +399,6 @@ public class UnoGame {
             cardsToBePickedUp = true;
         }
     }
-
-    public void setReverse(boolean reverse) {
-        this.reverse = reverse;
-    }
-
-    public boolean isReverse() {
-        return reverse;
-    }
-
 
     public boolean checkChallenge() {
         try {

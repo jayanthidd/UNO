@@ -12,9 +12,10 @@ public class App {
     UnoGame game = new UnoGame();
     private final Scanner input;
     private final PrintStream output;
-    public static boolean roundEnded;
-    public static boolean gameEnded;
+    public boolean roundEnded;
+    public boolean gameEnded;
     private String userInput;
+    public static int increment = 1;
 
 
     public App(Scanner input, PrintStream output){
@@ -30,7 +31,8 @@ public class App {
             do {
                 initializeRound();
                 while (!roundEnded) {
-                    for (int i = 0; i<4; i++) {
+
+                    for (int i = 0; i < 4 && i > -1; i+=increment) {
                         game.setPreviousPlayer(game.getCurrentPlayer());
                         game.setCurrentPlayer(game.getPlayers().get(i));
                         game.getPlayers().get(i).setUNOstatus(false);
@@ -42,17 +44,6 @@ public class App {
                         if (game.isSkip()){
                             game.skip();
                             continue;
-                        } else if (game.isReverse()){
-                            game.setReverse(false);
-                            if(i==0)
-                                i=1;
-                            if(i==1)
-                                i=0;
-                            if(i==2)
-                                i=3;
-                            if(i==3)
-                                i=2;
-                            game.setCurrentPlayer(game.getPlayers().get(i));
                         } else {
                             printState();
                             readUserInput();
@@ -76,11 +67,7 @@ public class App {
     }
 
     private void initializeGame() {
-        try {
-            game.createPlayers();
-        } catch (PlayerAlreadyExistsException e) {
-            e.printStackTrace();
-        }
+        game.createPlayers();
     }
 
     private void initializeRound() {
