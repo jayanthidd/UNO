@@ -59,7 +59,7 @@ public class UnoGame {
                 allowWild();
             }
             if (playedCard.toString().contains("REVERSE")) {
-                reverse();
+                reverse = true;
             }
             if (playedCard.toString().contains("SKIP")){
                 skip = true;
@@ -202,11 +202,6 @@ public class UnoGame {
         }return false;
 
      */
-    public void reverse() {
-        Collections.reverse(players);
-        reverse = true;
-    }
-
     public void renewDeckPile() {
         if (deckPile.size()<=4) {
             UnoCard topCard = discardPile.pop();

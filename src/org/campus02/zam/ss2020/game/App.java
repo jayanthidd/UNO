@@ -30,7 +30,8 @@ public class App {
             do {
                 initializeRound();
                 while (!roundEnded) {
-                    for (int i = 0; i<4; i++) {
+                    int increment = 1;
+                    for (int i = 0; i<4 && i>-1; i += increment) {
                         game.setPreviousPlayer(game.getCurrentPlayer());
                         game.setCurrentPlayer(game.getPlayers().get(i));
                         game.getPlayers().get(i).setUNOstatus(false);
@@ -43,15 +44,12 @@ public class App {
                             game.skip();
                             continue;
                         } else if (game.isReverse()){
-                            game.setReverse(false);
-                            if(i==0)
-                                i=1;
-                            if(i==1)
-                                i=0;
-                            if(i==2)
-                                i=3;
-                            if(i==3)
-                                i=2;
+                            if (i == 3){
+                                i = 2;
+                            }else{
+                            i++;
+                            }game.setReverse(false);
+                            increment *= -1;
                             game.setCurrentPlayer(game.getPlayers().get(i));
                         } else {
                             printState();
