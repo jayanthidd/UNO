@@ -1,4 +1,5 @@
 package org.campus02.zam.ss2020.game;
+import org.campus02.zam.ss2020.exceptions.PlayerAlreadyExistsException;
 import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
@@ -30,19 +31,28 @@ public class App {
                 initializeRound();
                 while (!roundEnded) {
                     for (int i = 0; i<4; i++) {
+                        game.setPreviousPlayer(game.getCurrentPlayer());
                         game.setCurrentPlayer(game.getPlayers().get(i));
                         game.getPlayers().get(i).setUNOstatus(false);
                         if (game.isCardsToBePickedUp()) {
-                            game.pickUpCards();
-                            continue;
+                            if(game.pickUpCards()) {
+                                continue;
+                            }
                         }
                         if (game.isSkip()){
                             game.skip();
                             continue;
                         } else if (game.isReverse()){
                             game.setReverse(false);
-                            continue;
-
+                            if(i==0)
+                                i=1;
+                            if(i==1)
+                                i=0;
+                            if(i==2)
+                                i=3;
+                            if(i==3)
+                                i=2;
+                            game.setCurrentPlayer(game.getPlayers().get(i));
                         } else {
                             printState();
                             readUserInput();
@@ -66,7 +76,11 @@ public class App {
     }
 
     private void initializeGame() {
-        game.createPlayers();
+        try {
+            game.createPlayers();
+        } catch (PlayerAlreadyExistsException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeRound() {
@@ -100,7 +114,8 @@ public class App {
             game.printHelp();
             readUserInput();
             updateState();
-        } else {
+        }
+        else {
             System.out.println("Invalid entry");
             readUserInput();
             updateState();
@@ -126,7 +141,7 @@ public class App {
         game.completeRound();
         roundEnded = true;
         for (Player p : game.getPlayers()){
-            if(p.getPoints()>=100)
+            if(p.getPoints()>=500)
                 gameEnded();
         }
     }
@@ -134,11 +149,13 @@ public class App {
     private void gameEnded(){
         System.out.println();
         System.out.println("This game has ended!");
-        game.printPlayerScores();
         gameEnded = true;
     }
 
     private void printFinalScore(){
+        System.out.println();
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("The final scores are : ");
         game.printPlayerScores();
     }
 }

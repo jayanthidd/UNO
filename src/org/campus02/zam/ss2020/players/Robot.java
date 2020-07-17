@@ -19,14 +19,17 @@ public class Robot extends Player {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        String robotInput;
         if (getHand().size()==2 && !isUNOstatus()) {
             System.out.println("UNO");
             return "UNO";
         }
-        if (openCard.toString().contains("WILD")){
+
+        if (openCard.toString().contains("WILD")){// if the open card is wild and it is the first card of the round
             if (null==wildColor){
                 for(UnoCard c : getHand()){
                     if(!c.toString().contains("WILD")){
+                        robotInput = c.toString();
                         System.out.println(c.toString());
                         return c.toString();
                     }
@@ -34,6 +37,7 @@ public class Robot extends Player {
             }
             for (UnoCard c : getHand()){
                 if (c.toString().contains(wildColor)){
+                    robotInput = c.toString();
                     System.out.println(c.toString());
                     return c.toString();
                 }
@@ -41,6 +45,7 @@ public class Robot extends Player {
         }
         for (UnoCard c : getHand()) {
             if (c.value.equals(openCard.value) || c.type.equals(openCard.type)) {
+                robotInput = c.toString();
                 System.out.println(c.toString());
                 return c.toString();
             }
@@ -57,6 +62,10 @@ public class Robot extends Player {
 
     @Override
     public String playWild() {
+        if (getHand().size()<=1){
+            System.out.println("GREEN");
+            return "GREEN";
+        }
         for (UnoCard c : getHand()) {
             if (!c.type.toString().contains("WILD")) {
                 System.out.println(c.type.toString());
