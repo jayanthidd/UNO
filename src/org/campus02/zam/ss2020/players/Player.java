@@ -55,7 +55,6 @@ public abstract class Player {
         }
         this.points = pts;                              // We will need to write SQL code to connect to the database
     }
-
     public boolean hasWon (String name) {
         if (this.points >= 500) {
             return true;
