@@ -32,7 +32,10 @@ public class App {
                 initializeRound();
                 while (!roundEnded) {
 
-                    for (int i = 0; i < 4 && i > -1; i+=increment) {
+                    int initial = 0;
+                    if (increment == -1) initial = 3;
+
+                    for (int i = initial; i < 4 && i > -1; i+=increment) {
                         game.setPreviousPlayer(game.getCurrentPlayer());
                         game.setCurrentPlayer(game.getPlayers().get(i));
                         game.getPlayers().get(i).setUNOstatus(false);
