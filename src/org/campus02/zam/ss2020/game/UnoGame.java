@@ -107,10 +107,7 @@ public class UnoGame {
      * @return
      */
     public boolean isAllowed() {
-        if (playedCard.toString().contains("WILD")) {
-            return isWildAllowed();
-        }
-        if (playedCard.value == discardPile.peek().value || playedCard.type == discardPile.peek().type) {
+        if (playedCard.value == discardPile.peek().value || playedCard.type == discardPile.peek().type || playedCard.toString().contains("WILD")) {
             return true;
         }
         if (discardPile.peek().toString().contains("WILD") && playedCard.toString().contains("WILD")){
@@ -126,18 +123,6 @@ public class UnoGame {
         return false;
     }
 
-    /**
-     * checks if the current player is allowed to play a wild card
-     *
-     * @return
-     */
-    private boolean isWildAllowed() {
-        if (currentPlayer.getHand().contains(discardPile.peek().value) || currentPlayer.getHand().contains(discardPile.peek().type)) {
-            penalty(1);
-            System.out.println("You can't play that card. Penalty!");
-            return false;
-        } else return true;
-    }
 
     /**
      * WHen the open card is a wild card, this method checks to see if the card played by the player is valid.
@@ -159,7 +144,7 @@ public class UnoGame {
             penalty(2);
             printCardsPickedUp();
             return true;
-        } else if (discardPile.peek().toString().contains("WILDPLUS4")) {
+        } else if (discardPile.peek().toString().contains("WILDPLUS4") && discardPile.size()!=1) {
             System.out.println("-------------------------------------------------------------------");
             System.out.println("Player " + currentPlayer.getName() + " plays!");
             System.out.println("The Open Card is : " + discardPile.peek());
@@ -183,6 +168,11 @@ public class UnoGame {
                 return true;
             }
         }
+//        else if (discardPile.peek().toString().contains("WILDPLUS4")){
+//            penalty(4);
+//            printCardsPickedUp();
+//            return true;
+//        }
         return true;
     }
 

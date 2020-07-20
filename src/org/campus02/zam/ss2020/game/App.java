@@ -1,10 +1,12 @@
 package org.campus02.zam.ss2020.game;
+import org.campus02.zam.ss2020.SqliteClient.SqliteClient;
 import org.campus02.zam.ss2020.exceptions.PlayerAlreadyExistsException;
 import org.campus02.zam.ss2020.players.HumanPlayer;
 import org.campus02.zam.ss2020.players.Player;
 
 
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.*;
 
@@ -16,7 +18,13 @@ public class App {
     public boolean gameEnded;
     private String userInput;
     public static int increment = 1;
-
+    private SqliteClient client;
+    // adapt this line
+    static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
+    //adapt this line for our game
+    private static final String INSERT_TEMPLATE= "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
+    //adapt this line
+    private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
 
     public App(Scanner input, PrintStream output){
         this.input = input;
@@ -26,8 +34,8 @@ public class App {
     }
 
     public void Run() {
-        initializeGame();
         try {
+            initializeGame();
             do {
                 initializeRound();
                 while (!roundEnded) {
@@ -57,6 +65,8 @@ public class App {
                         }
                     }
                     if (game.getCurrentPlayer().getHand().isEmpty()){
+                        //adapt this line for us
+                        client.executeStatement(String.format(INSERT_TEMPLATE, game.getCurrentPlayer().getName(), 1, 1, 50));
                         roundEnded();
                         break;
                     }
@@ -69,8 +79,12 @@ public class App {
         }
     }
 
-    private void initializeGame() {
+    private void initializeGame() throws SQLException {
         game.createPlayers();
+        client = new SqliteClient("Unogame.sqlite");
+        if (!client.tableExists("Sessions")){
+            client.executeStatement(CREATETABLE);
+        }
     }
 
     private void initializeRound() {
@@ -127,7 +141,7 @@ public class App {
         // Print(show) the current hand of the player - completed
 
     }
-    private void roundEnded(){
+    private void roundEnded() throws SQLException {
         game.completeRound();
         roundEnded = true;
         for (Player p : game.getPlayers()){
