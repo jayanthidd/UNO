@@ -103,6 +103,10 @@ public class App {
         round++;
         roundEnded = false;
         game.reset();
+        System.out.println();
+        System.out.println("This is the order in which players will play :");
+        System.out.println(game.getPlayers());
+        System.out.println();
     }
 
     private void readUserInput() {

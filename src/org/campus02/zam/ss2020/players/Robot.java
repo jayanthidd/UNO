@@ -63,7 +63,7 @@ public class Robot extends Player {
     @Override
     public String playWild() {
         if (getHand().size()<=1){
-            System.out.println("GREEN");
+            System.out.println("GREEN"); // randomise the color
             return "GREEN";
         }
         for (UnoCard c : getHand()) {
