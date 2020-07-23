@@ -34,6 +34,9 @@ creates in Constructor one card with type, value and card points
 **public enum Type:** Sets the card colors either Red, Green, Blue, Yellow
 **public enum Value:** Sets the values of the card (0-9, drawto, skip, wild, wildfour)
 
+### EXCEPTIONS:
+
+**PlayerAlreadyExistsException :** This exception is thrown and handled when two human players choose the same name at the start of the game. 
 
 ### GAME:
 
@@ -44,7 +47,7 @@ creates in Constructor one card with type, value and card points
 **public void Run():**\
 initializes the game and the round. Then it picks the current player and checks if 	cards are to be picked up. When a game ends, it prints the final score.
 
-** private void initializeGame()**\
+**private void initializeGame()**\
 creates Players
 
 **private void initalizeRound()**\
@@ -164,7 +167,7 @@ draw a card, plays drawn card if possible, if not it explains you cannot play it
 creates the Players, asks for a name and puts them in a random order. When STOP is put in, creates the rest of the players as Robots
 
 **public boolean isCard()**\
-checks if the card the user put in is valid
+checks if the input made by the user is a valid card
 
 
 
@@ -172,9 +175,11 @@ checks if the card the user put in is valid
 
 3 Classes:
 
-HumanPlayer
+**Player:** This is an abstract class and holds some prewritten code that the HumanPlayer class and the Robot class inherit.  There is  also a playCard abstract method that is implemented by the HumanPlayer and Robot classes
 
-Player: Abstract Class
+**HumanPlayer :** This class extends the Player class and implements the playCard method for a human player
 
-Robot
+
+
+**Robot :** This class extends the Player class and implements the playCard method for a robot
 

@@ -83,10 +83,8 @@ public class UnoGame {
     public void completeRound() {
         currentPlayer.setPoints(combineHandsFromAllPlayers());
         System.out.println();
-        System.out.println("This round is over!");
-        System.out.println("Congratulations " + currentPlayer.getName());
-        System.out.println();
-        System.out.println();
+        System.out.println("This round is over! Congratulations " + currentPlayer.getName());
+        System.out.println("----------------------------------------------------------------");
     }
 
     private void allowWild() {
@@ -230,7 +228,6 @@ public class UnoGame {
     }
 
     public void printPlayerScores() {
-        System.out.println("Scores are ");
         for (Player p : players) {
             System.out.println(p.getName() + " : " + p.getPoints());
         }
@@ -308,7 +305,6 @@ public class UnoGame {
             String Player = scanner.next().toUpperCase();
             for (Player pl : players){
                 if(pl.getName().equals(Player)) {
-                    System.out.println("Player already exists");
                     try {
                         throw new PlayerAlreadyExistsException();
                     } catch (PlayerAlreadyExistsException e) {

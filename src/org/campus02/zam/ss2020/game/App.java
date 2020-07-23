@@ -70,7 +70,6 @@ public class App {
                 }
                 Thread.sleep(100);
             } while (!gameEnded);
-            printFinalScore();
         }catch (Exception ex){
             output.println(ex);
         }
@@ -91,9 +90,13 @@ public class App {
         session++;
         System.out.println("You are beginning session number : " + session);
         game.createPlayers();
+        for (Player p: game.getPlayers()) {
+            client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, 0));
+        }
     }
 
     private void initializeRound() {
+        System.out.println();
         System.out.println("New Round Begins! ");
         round++;
         roundEnded = false;
@@ -122,7 +125,7 @@ public class App {
         }else if (userInput.toUpperCase().equals("DRAW")){
             game.drawCard();
         }else if (userInput.toUpperCase().equals("POINTS")){
-            game.printPlayerScores();
+            printFinalScore();
             readUserInput();
             updateState();
         } else if (userInput.toUpperCase().equals("HELP")) {
@@ -154,7 +157,7 @@ public class App {
         for (Player p: game.getPlayers()) {
             client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, p.getPoints()));
         }
-        System.out.println("The Scores for round " + round + "are : ");
+        System.out.println("The Scores for round " + round + " are : ");
         game.printPlayerScores();
         for (Player p : game.getPlayers()) {
             try {
@@ -173,14 +176,14 @@ public class App {
 
     private void gameEnded(){
         System.out.println();
-        System.out.println("This Session has ended!");
+        System.out.println("Session " + session + " has ended! " + game.getCurrentPlayer().getName() + " has won!");
         gameEnded = true;
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("The Final scores are : ");
+        printFinalScore();
     }
 
     private void printFinalScore(){
-        System.out.println();
-        System.out.println("-------------------------------------------------------------");
-        System.out.println("The scores are : ");
         for (Player p : game.getPlayers()) {
             try {
                 ArrayList<HashMap<String, String>> results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p.getName(), session));
