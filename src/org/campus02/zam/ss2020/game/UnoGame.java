@@ -334,10 +334,7 @@ public class UnoGame {
         }
         completePlayers();
         Collections.shuffle(players);
-        System.out.println();
-        System.out.println("This is the order in which players will play :");
-        System.out.println(players);
-        System.out.println();
+
     }
 
     public boolean isCard(String userInput) {
