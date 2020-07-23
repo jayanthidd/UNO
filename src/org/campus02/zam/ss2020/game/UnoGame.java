@@ -322,10 +322,10 @@ public class UnoGame {
                 continue;
             }
             if (Player.equals("STOP")) {
-//                if (players.size() == 0) {
-//                    System.out.println("There should be at least one human player");
-//                    createPlayers();
-//                }
+                if (players.size() == 0) {
+                    System.out.println("There should be at least one human player");
+                    createPlayers();
+                }
                 System.out.println("Bots will be added to complete the players!");
                 break;
             }
@@ -334,10 +334,6 @@ public class UnoGame {
         }
         completePlayers();
         Collections.shuffle(players);
-        System.out.println();
-        System.out.println("This is the order in which players will play :");
-        System.out.println(players);
-        System.out.println();
     }
 
     public boolean isCard(String userInput) {
