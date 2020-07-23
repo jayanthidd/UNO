@@ -189,7 +189,7 @@ public class App {
                 ArrayList<HashMap<String, String>> results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p.getName(), session));
 
                 for (HashMap<String, String> map : results) {
-                    System.out.println(map.get("Player") + " hat :  " + map.get("Score") + " Punkte");
+                    System.out.println(map.get("Player") + " has :  " + map.get("Score") + " Points");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
