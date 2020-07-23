@@ -144,7 +144,7 @@ public class UnoGame {
             penalty(2);
             printCardsPickedUp();
             return true;
-        } else if (discardPile.peek().toString().contains("WILDPLUS4") && discardPile.size()!=1) {
+        } else if (discardPile.peek().toString().contains("WILDPLUS4") && wildColor!=null) {
             System.out.println("-------------------------------------------------------------------");
             System.out.println("Player " + currentPlayer.getName() + " plays!");
             System.out.println("The Open Card is : " + discardPile.peek());
@@ -390,6 +390,9 @@ public class UnoGame {
         getDiscardPile().add(getDeckPile().pop());
         if (discardPile.peek().toString().equals("WILDPLUS4") || discardPile.peek().toString().contains("DRAWTWO")) {
             cardsToBePickedUp = true;
+        }
+        for (Player p : players){
+            p.resetPoints();
         }
     }
 

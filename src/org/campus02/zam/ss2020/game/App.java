@@ -153,7 +153,6 @@ public class App {
         game.completeRound();
 
         roundEnded = true;
-        //adapt this line for us
         for (Player p: game.getPlayers()) {
             client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, p.getPoints()));
         }
@@ -166,20 +165,23 @@ public class App {
 
     private void gameEnded(){
         System.out.println();
-        System.out.println("This game has ended!");
+        System.out.println("This Session has ended!");
         gameEnded = true;
     }
 
     private void printFinalScore(){
         System.out.println();
         System.out.println("-------------------------------------------------------------");
-        System.out.println("The final scores are : ");
+        System.out.println("The scores are : ");
         for (Player p : game.getPlayers()) {
             try {
                 ArrayList<HashMap<String, String>> results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p.getName(), session));
 
                 for (HashMap<String, String> map : results) {
                     System.out.println(map.get("Player") + " hat :  " + map.get("Score") + " Punkte");
+                    if (Integer.valueOf(map.get("Score")) > 500){
+                        gameEnded=true;
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
