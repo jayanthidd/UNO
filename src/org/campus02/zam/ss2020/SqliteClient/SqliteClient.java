@@ -22,6 +22,7 @@ public class SqliteClient {
         statement.executeUpdate(sqlStatement);
     }
 
+
     public ArrayList<HashMap<String, String>> executeQuery(String sqlQuery) throws SQLException{
         Statement statement = connection.createStatement();
         statement.setQueryTimeout(30);  // set timeout to 30 sec.

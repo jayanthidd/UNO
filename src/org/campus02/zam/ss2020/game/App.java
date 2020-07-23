@@ -20,13 +20,14 @@ public class App {
     public static int increment = 1;
     private SqliteClient client;
     private int round;
-    private int session = 0;
+    private int session;
     // adapt this line
     static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
     //adapt this line for our game
     private static final String INSERT_TEMPLATE= "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
     //adapt this line.  Let's do this on Thursday
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
+    private static final String SELECT_MAX = "SELECT MAX(Session) As Session FROM SESSIONS;";
 
     public App(Scanner input, PrintStream output){
         this.input = input;
@@ -41,6 +42,7 @@ public class App {
             do {
                 initializeRound();
                 while (!roundEnded) {
+
 
                     int initial = 0;
                     if (increment == -1) initial = 3;
@@ -81,12 +83,19 @@ public class App {
 
     private void initializeGame() throws SQLException {
         round = 0;
-        session ++;
-        game.createPlayers();
         client = new SqliteClient("Unogame.sqlite");
         if (!client.tableExists("Sessions")){
             client.executeStatement(CREATETABLE);
         }
+        ArrayList<HashMap<String, String>> max = client.executeQuery(SELECT_MAX);
+        for (HashMap<String, String> map : max) {
+            if (Integer.valueOf(map.get("Session")) > session){
+                session = Integer.valueOf(map.get("Session"));
+            }
+        }
+        session++;
+        System.out.println(session);
+        game.createPlayers();
     }
 
     private void initializeRound() {
@@ -146,10 +155,11 @@ public class App {
     }
     private void roundEnded() throws SQLException {
         game.completeRound();
+        printFinalScore();
         roundEnded = true;
         //adapt this line for us
         for (Player p: game.getPlayers()) {
-            client.executeStatement(String.format(INSERT_TEMPLATE, game.getCurrentPlayer().getName(), session, round, game.getCurrentPlayer().getPoints()));
+            client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, p.getPoints()));
         }
         for (Player p : game.getPlayers()){
             if(p.getPoints()>=500)
@@ -167,6 +177,17 @@ public class App {
         System.out.println();
         System.out.println("-------------------------------------------------------------");
         System.out.println("The final scores are : ");
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+        for (Player p : game.getPlayers()) {
+            try {
+                results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p, session));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        for (HashMap<String, String> map : results) {
+            System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
+        }
         game.printPlayerScores();
     }
 }

@@ -319,10 +319,10 @@ public class UnoGame {
                 continue;
             }
             if (Player.equals("STOP")) {
-                if (players.size() == 0) {
-                    System.out.println("There should be at least one human player");
-                    createPlayers();
-                }
+//                if (players.size() == 0) {
+//                    System.out.println("There should be at least one human player");
+//                    createPlayers();
+//                }
                 System.out.println("Bots will be added to complete the players!");
                 break;
             }
