@@ -167,14 +167,28 @@ creates the Players, asks for a name and puts them in a random order. When STOP 
 checks if the card the user put in is valid
 
 
-
 ### PLAYERS:
 
 3 Classes:
 
 HumanPlayer
 
-Player: Abstract Class
+**public class HumanOlayer()**\
+extends Player, prints the Cards on the Hand, asks what the player would like to play
+
+Player 
+Abstract Class
+
+**public void setPoints()**\
+calculates the points, also gives back if the Player has won
+
 
 Robot
+
+**public String playCard()**\
+extends Player, prints the Cards on the Hand, asks what the player would like to play
+Also checks if the Robot has Uno and prints it when it is the case
+
+**public String playWild()**\
+plays the Wild card with a random color
 
