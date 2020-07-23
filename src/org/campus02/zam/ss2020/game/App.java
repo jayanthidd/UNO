@@ -21,11 +21,8 @@ public class App {
     private SqliteClient client;
     private int round;
     private int session;
-    // adapt this line
     static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
-    //adapt this line for our game
     private static final String INSERT_TEMPLATE= "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
-    //adapt this line.  Let's do this on Thursday
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
     private static final String SELECT_MAX = "SELECT MAX(Session) As Session FROM SESSIONS;";
 
@@ -41,12 +38,10 @@ public class App {
             initializeGame();
             do {
                 initializeRound();
+
+                int initial = 0;
                 while (!roundEnded) {
-
-
-                    int initial = 0;
                     if (increment == -1) initial = 3;
-
                     for (int i = initial; i < 4 && i > -1; i+=increment) {
                         game.setPreviousPlayer(game.getCurrentPlayer());
                         game.setCurrentPlayer(game.getPlayers().get(i));
@@ -140,7 +135,6 @@ public class App {
             readUserInput();
             updateState();
         }
-
     }
 
     private void printState() {
