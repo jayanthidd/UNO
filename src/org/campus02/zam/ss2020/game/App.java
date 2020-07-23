@@ -94,7 +94,7 @@ public class App {
             }
         }
         session++;
-        System.out.println(session);
+        System.out.println("You are beginning session number : " + session);
         game.createPlayers();
     }
 
@@ -136,9 +136,7 @@ public class App {
             readUserInput();
             updateState();
         }
-        // Read the user input (what will he play?) - completed
-        // Validate the User input (can he play it?) - completed
-        // Update the state and show the current print state - completed
+
     }
 
     private void printState() {
@@ -149,18 +147,17 @@ public class App {
         } else {
             System.out.println("The Open Card is : " + game.getDiscardPile().peek());
         }
-        // Print(show) the Top Card of the discard pile - completed
-        // Print(show) the current hand of the player - completed
-
     }
+
     private void roundEnded() throws SQLException {
         game.completeRound();
-        printFinalScore();
+
         roundEnded = true;
         //adapt this line for us
         for (Player p: game.getPlayers()) {
             client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, p.getPoints()));
         }
+        printFinalScore();
         for (Player p : game.getPlayers()){
             if(p.getPoints()>=500)
                 gameEnded();
@@ -177,17 +174,16 @@ public class App {
         System.out.println();
         System.out.println("-------------------------------------------------------------");
         System.out.println("The final scores are : ");
-        ArrayList<HashMap<String, String>> results = new ArrayList<>();
         for (Player p : game.getPlayers()) {
             try {
-                results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p, session));
+                ArrayList<HashMap<String, String>> results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p.getName(), session));
+
+                for (HashMap<String, String> map : results) {
+                    System.out.println(map.get("Player") + " hat :  " + map.get("Score") + " Punkte");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        for (HashMap<String, String> map : results) {
-            System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
-        }
-        game.printPlayerScores();
     }
 }

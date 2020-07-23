@@ -29,6 +29,7 @@ public class UnoGame {
     private boolean skip;
     private UnoCard previousCard;
     private Scanner scanner;
+    private String[] robotResponse = {"Y", "N"};
 
     public UnoGame() {
         this.players = new ArrayList<>();
@@ -85,7 +86,6 @@ public class UnoGame {
         System.out.println("This round is over!");
         System.out.println("Congratulations " + currentPlayer.getName());
         System.out.println();
-        printPlayerScores();
         System.out.println();
     }
 
@@ -130,7 +130,7 @@ public class UnoGame {
      * @return
      */
     private boolean validateWild() {
-        if (discardPile.size() == 1) {
+        if (wildColor==null) {
             return true;
         } else if (playedCard.type.toString().equals(wildColor)) {
             return true;
@@ -149,17 +149,25 @@ public class UnoGame {
             System.out.println("Player " + currentPlayer.getName() + " plays!");
             System.out.println("The Open Card is : " + discardPile.peek());
             System.out.print("Would you like to challenge this card? Y / N : ");
+            String response;
             if (currentPlayer.getName().contains("Robot")){
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("N");
-                penalty(4);printCardsPickedUp();
-                return true;
+                Collections.shuffle(Arrays.asList(robotResponse));
+                response = robotResponse[0];
+                System.out.println(response);
+                if (response.equals("Y")){
+                    return checkChallenge();
+                } else {
+                    penalty(4);
+                    printCardsPickedUp();
+                    return true;
+                }
             }
-            String response = scanner.next().toUpperCase();
+            response = scanner.next().toUpperCase();
             if (response.equals("Y")){
                 return checkChallenge();
             } else {
@@ -168,11 +176,6 @@ public class UnoGame {
                 return true;
             }
         }
-//        else if (discardPile.peek().toString().contains("WILDPLUS4")){
-//            penalty(4);
-//            printCardsPickedUp();
-//            return true;
-//        }
         return true;
     }
 
