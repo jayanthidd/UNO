@@ -160,10 +160,20 @@ public class App {
         for (Player p: game.getPlayers()) {
             client.executeStatement(String.format(INSERT_TEMPLATE, p.getName(), session, round, p.getPoints()));
         }
-        printFinalScore();
-        for (Player p : game.getPlayers()){
-            if(p.getPoints()>=500)
-                gameEnded();
+        System.out.println("The Scores for round " + round + "are : ");
+        game.printPlayerScores();
+        for (Player p : game.getPlayers()) {
+            try {
+                ArrayList<HashMap<String, String>> results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, p.getName(), session));
+
+                for (HashMap<String, String> map : results) {
+                    if (Integer.valueOf(map.get("Score")) > 500) {
+                        gameEnded();
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -183,9 +193,6 @@ public class App {
 
                 for (HashMap<String, String> map : results) {
                     System.out.println(map.get("Player") + " hat :  " + map.get("Score") + " Punkte");
-                    if (Integer.valueOf(map.get("Score")) > 500){
-                        gameEnded=true;
-                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
