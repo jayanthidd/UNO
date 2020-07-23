@@ -31,8 +31,8 @@ creates in Constructor one card with type, value and card points
 
 #### Enums:
 
-**public enum Type:** Sets the card colors either Red, Green, Blue, Yellow
-**public enum Value:** Sets the values of the card (0-9, drawto, skip, wild, wildfour)
+**public enum Type:** Sets the card colors either Red, Green, Blue, Yellow, Wild
+**public enum Value:** Sets the values of the card (0-9, draw two, skip, reverse, color and plus4)
 
 ### EXCEPTIONS:
 
