@@ -177,7 +177,7 @@ checks if the input made by the user is a valid card
 
 **Player:** This is an abstract class and holds some prewritten code that the HumanPlayer class and the Robot class inherit.  There is  also a playCard abstract method that is implemented by the HumanPlayer and Robot classes
 
-**HumanPlayer :** This class extends the Player class and implements the playCard method for a human player
+**HumanPlayer :** This class extends the Player class and implements the playCard method for a human player that can be created at runtime
 
 
 
